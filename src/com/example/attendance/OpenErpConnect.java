@@ -7,11 +7,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import org.xmlrpc.android.XMLRPCClient;
 import org.xmlrpc.android.XMLRPCException;
 
 import android.content.ContentValues;
+import android.provider.Settings.System;
+import android.support.v4.print.PrintHelper;
 import android.util.Log;
 
 /**
@@ -45,8 +48,7 @@ public class OpenErpConnect {
 	protected static final String CONNECTOR_NAME = "OpenErpConnect";
 
 	/** You should not use the constructor directly, use connect() instead */
-	protected OpenErpConnect(String server, Integer port, String db,
-			String user, String pass, Integer id) throws MalformedURLException {
+	protected OpenErpConnect(String server, Integer port, String db, String user, String pass, Integer id) throws MalformedURLException {
 		mServer = server;
 		mPort = port;
 		mDatabase = db;
@@ -60,8 +62,7 @@ public class OpenErpConnect {
 	 * @return An OpenErpConnect instance, which you will use to call the
 	 *         methods.
 	 */
-	public static OpenErpConnect connect(String server, Integer port,
-			String db, String user, String pass) {
+	public static OpenErpConnect connect(String server, Integer port, String db, String user, String pass) {
 		return login(server, port, db, user, pass);
 	}
 
@@ -73,8 +74,7 @@ public class OpenErpConnect {
 	 * @return true if the connection could be established, else returns false.
 	 *         The connection will not be stored
 	 */
-	public static Boolean testConnection(String server, Integer port,
-			String db, String user, String pass) {
+	public static Boolean testConnection(String server, Integer port, String db, String user, String pass) {
 		return login(server, port, db, user, pass) != null;
 	}
 
@@ -83,15 +83,11 @@ public class OpenErpConnect {
 	}
 
 	protected static OpenErpConnect login(ContentValues connectionParams) {
-		return login(connectionParams.getAsString("server"),
-				connectionParams.getAsInteger("port"),
-				connectionParams.getAsString("database"),
-				connectionParams.getAsString("username"),
+		return login(connectionParams.getAsString("server"), connectionParams.getAsInteger("port"), connectionParams.getAsString("database"), connectionParams.getAsString("username"),
 				connectionParams.getAsString("password"));
 	}
 
-	protected static OpenErpConnect login(String server, Integer port,
-			String db, String user, String pass) {
+	protected static OpenErpConnect login(String server, Integer port, String db, String user, String pass) {
 		OpenErpConnect connection = null;
 		try {
 			URL loginUrl = new URL("http", server, port, "/xmlrpc/common");
@@ -118,13 +114,11 @@ public class OpenErpConnect {
 	 * values.put("number", 10); <br>
 	 * </code>
 	 * */
-	public Long create(String model, HashMap<String, ?> values,
-			HashMap<String, ?> context) {
+	public Long create(String model, HashMap<String, ?> values, HashMap<String, ?> context) {
 		Long newObjectId = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			newObjectId = ((Integer) client.call("execute", mDatabase, mUserId,
-					mPassword, model, "create", values, context)).longValue();
+			newObjectId = ((Integer) client.call("execute", mDatabase, mUserId, mPassword, model, "create", values, context)).longValue();
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
@@ -139,8 +133,7 @@ public class OpenErpConnect {
 		return search(model, count, 0, 0, null, false, conditions);
 	}
 
-	public Long[] search(String model, boolean count, Integer limit,
-			String order, boolean reverseOrder, Object[] conditions) {
+	public Long[] search(String model, boolean count, Integer limit, String order, boolean reverseOrder, Object[] conditions) {
 		return search(model, count, 0, limit, order, reverseOrder, conditions);
 	}
 
@@ -151,9 +144,7 @@ public class OpenErpConnect {
 	 * 
 	 * @return The ids of matching objects.
 	 * */
-	public Long[] search(String model, boolean count, Integer offset,
-			Integer limit, String order, boolean reverseOrder,
-			Object[] conditions) {
+	public Long[] search(String model, boolean count, Integer offset, Integer limit, String order, boolean reverseOrder, Object[] conditions) {
 		Long[] result = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
@@ -170,11 +161,9 @@ public class OpenErpConnect {
 			parameters.add(null);
 			parameters.add(count);
 			if (count) { // We just want the number of items
-				result = new Long[] { ((Integer) client.call("execute",
-						parameters)).longValue() };
+				result = new Long[] { ((Integer) client.call("execute", parameters)).longValue() };
 			} else { // Returning the list of matching item id's
-				Object[] responseIds = (Object[]) client.call("execute",
-						parameters);
+				Object[] responseIds = (Object[]) client.call("execute", parameters);
 				// In case no matching records were found, an empty list is
 				// returned by the ws
 				// The ids are returned as Integer, but we want Long for better
@@ -205,15 +194,12 @@ public class OpenErpConnect {
 	 *            all the fields
 	 * */
 	@SuppressWarnings("unchecked")
-	public List<HashMap<String, Object>> read(String model, Long[] ids,
-			String[] fields) {
+	public List<HashMap<String, Object>> read(String model, Long[] ids, String[] fields) {
 		List<HashMap<String, Object>> listOfFieldValues = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			Object[] responseFields = (Object[]) client.call("execute",
-					mDatabase, mUserId, mPassword, model, "read", ids, fields);
-			listOfFieldValues = new ArrayList<HashMap<String, Object>>(
-					responseFields.length);
+			Object[] responseFields = (Object[]) client.call("execute", mDatabase, mUserId, mPassword, model, "read", ids, fields);
+			listOfFieldValues = new ArrayList<HashMap<String, Object>>(responseFields.length);
 			for (Object objectFields : responseFields) {
 				listOfFieldValues.add((HashMap<String, Object>) objectFields);
 			}
@@ -224,13 +210,11 @@ public class OpenErpConnect {
 	}
 
 	/** Used to modify an existing object. */
-	public Boolean write(String model, Long[] ids, HashMap<String, ?> values,
-			HashMap<String, ?> context) {
+	public Boolean write(String model, Long[] ids, HashMap<String, ?> values, HashMap<String, ?> context) {
 		Boolean writeOk = false;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			writeOk = (Boolean) client.call("execute", mDatabase, mUserId,
-					mPassword, model, "write", ids, values, context);
+			writeOk = (Boolean) client.call("execute", mDatabase, mUserId, mPassword, model, "write", ids, values, context);
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
@@ -242,8 +226,7 @@ public class OpenErpConnect {
 		Boolean unlinkOk = false;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			unlinkOk = (Boolean) client.call("execute", mDatabase, mUserId,
-					mPassword, model, "unlink", ids);
+			unlinkOk = (Boolean) client.call("execute", mDatabase, mUserId, mPassword, model, "unlink", ids);
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
@@ -271,19 +254,14 @@ public class OpenErpConnect {
 	 * in turn will be received by the Class constructor in the form of
 	 * "extra_0", "extra_1"... in the HashMap
 	 * */
-	public <E> void browse(String model, Class<E> modelClass, Long[] ids,
-			List<String> fields, List<E> resultList, Object... extras)
-			throws OpenErpConnectException {
-		List<HashMap<String, Object>> listOfFieldValues = read(model, ids,
-				fields.toArray(new String[fields.size()]));
+	public <E> void browse(String model, Class<E> modelClass, Long[] ids, List<String> fields, List<E> resultList, Object... extras) throws OpenErpConnectException {
+		List<HashMap<String, Object>> listOfFieldValues = read(model, ids, fields.toArray(new String[fields.size()]));
 		if (listOfFieldValues != null) {
 			try {
-				Constructor<E> constructor = modelClass
-						.getConstructor(HashMap.class);
+				Constructor<E> constructor = modelClass.getConstructor(HashMap.class);
 				for (HashMap<String, Object> objectHashmap : listOfFieldValues) {
 					for (int numParam = 0; numParam < extras.length; numParam++) {
-						objectHashmap
-								.put("extra_" + numParam, extras[numParam]);
+						objectHashmap.put("extra_" + numParam, extras[numParam]);
 					}
 					resultList.add(constructor.newInstance(objectHashmap));
 				}
@@ -307,8 +285,7 @@ public class OpenErpConnect {
 				throw new OpenErpConnectException(e.toString());
 			}
 		} else {
-			throw new OpenErpConnectException(
-					OpenErpConnectException.ERROR_READ);
+			throw new OpenErpConnectException(OpenErpConnectException.ERROR_READ);
 		}
 	}
 
@@ -394,5 +371,68 @@ public class OpenErpConnect {
 		public OpenErpConnectException(String message) {
 			super(message);
 		}
+	}
+
+	/*
+	 * *************************************************************************************************************************
+	 * EXTENSION DE LA LIBRERIA
+	 * *************************************************
+	 * ************************************************************************
+	 */
+
+	/*
+	 * Metodo para cargar las base de datos de Un Sevidor de OpenERP
+	 */
+	protected static String[] getDatabaseList(String server, int port) {
+		String[] result = null;
+
+		try {
+			URL ServerUrl;
+			ServerUrl = new URL("http", server, port, "/xmlrpc/db");
+			XMLRPCClient client = new XMLRPCClient(ServerUrl);
+
+			Object aux = client.call("list", new ArrayList<Object>());
+			Object[] a = (Object[]) aux;
+			String[] res = new String[a.length];
+			for (int i = 0; i < a.length; i++) {
+				if (a[i] instanceof String) {
+					res[i] = (String) a[i];
+				}
+			}
+			return res;
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XMLRPCException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (result == null) {
+			result = new String[0];
+		}
+		return result;
+	}
+
+	/*
+	 * Metodo para probar la Conexion aun Servidor de OpenERP
+	 */
+	protected static boolean TestConnection(String server, int port) {
+		boolean result = false;
+		try {
+			URL ServerUrl;
+			ServerUrl = new URL("http", server, port, "/xmlrpc/common");
+			XMLRPCClient client = new XMLRPCClient(ServerUrl);
+			Object res = client.call("check_connectivity");
+			result = Boolean.parseBoolean(res + "");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XMLRPCException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

@@ -8,5 +8,11 @@
     <string name="lblHost">Sevidor</string>
     <string name="lblPort">Puerto</string>
     <string name="lblDB">Base de Datos</string>
+    <string name="lblUsername">Nombre de Usuario</string>
+    <string name="lblPassword">Password</string>
+    
+     <string name="txtHost">192.168.10.103</string>
+     <string name="txtPort">8069</string>
+    
 
 </resources>

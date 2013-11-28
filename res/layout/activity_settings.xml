@@ -9,14 +9,19 @@
     tools:context=".Settings"
     tools:ignore="HardcodedText" >
 
-    <Button
-        android:id="@+id/btnTest"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/txtHost"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/lblServer"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="98dp"
-        android:text="Probar" />
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/txtHost" >
+        
+
+        <requestFocus />
+    </EditText>
 
     <TextView
         android:id="@+id/lblServer"
@@ -24,20 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtHost"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="35dp"
         android:text="@string/lblHost" />
-
-    <EditText
-        android:id="@+id/txtHost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lblServer"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:inputType="textPersonName" >
-
-        <requestFocus />
-    </EditText>
 
     <TextView
         android:id="@+id/textView2"
@@ -45,25 +37,82 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtHost"
         android:layout_below="@+id/txtHost"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="@string/lblPort"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtPort"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView2"
         android:layout_below="@+id/textView2"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number"
+        android:text="@string/txtPort" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtPort"
+        android:layout_below="@+id/txtPort"
+        android:layout_marginTop="15dp"
+        android:text="@string/lblDB"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cmbDb"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:text="Guardar" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cmbDb"
+        android:layout_below="@+id/cmbDb"
+        android:layout_marginTop="15dp"
+        android:text="@string/lblUsername"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/txtxUsername"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:ems="10"
+        tools:ignore="TextFields" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnTest"
+        android:layout_below="@+id/textView4"
+        android:ems="10"
+        android:inputType="textPassword" />
 
     <Spinner
         android:id="@+id/cmbDb"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1" />
+
+    <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="30dp" />
+        android:layout_alignLeft="@+id/txtPassword"
+        android:layout_below="@+id/txtxUsername"
+        android:layout_marginTop="16dp"
+        android:text="@string/lblPassword"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
