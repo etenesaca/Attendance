@@ -19,6 +19,7 @@ import android.os.StrictMode;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.text.AndroidCharacter;
 import android.util.Log;
 import android.view.Menu;
@@ -75,7 +76,8 @@ public class Settings extends Activity {
 					// TODO - Enviar un mensaje diciendoque no se puede conectar
 					// al Servidor
 					AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
-					dlgAlert.setTitle("Error de Conexión").setIcon(android.R.drawable.ic_delete);;
+					dlgAlert.setTitle("Error de Conexión").setIcon(android.R.drawable.ic_delete);
+					;
 					dlgAlert.setMessage("No se pudo conectar al servidor, Verifque los parametros de Conexión.");
 					dlgAlert.setPositiveButton("OK", null);
 					dlgAlert.setCancelable(true);
@@ -101,12 +103,27 @@ public class Settings extends Activity {
 				final String user = txtxUsername.getText().toString();
 				final String pass = txtPassword.getText().toString();
 
-				if ((server == "") || (port_str == "") || (db == "") || (user == "") || (pass == "")) {
-					AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
-					dlgAlert.setTitle("Advertencia").setIcon(android.R.drawable.ic_delete);
-					dlgAlert.setMessage("Antes de Guarda primero llene todos los campos.");
-					dlgAlert.setPositiveButton("OK", null);
-					dlgAlert.setCancelable(true);
+				AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
+				dlgAlert.setTitle("Advertencia").setIcon(android.R.drawable.ic_delete);
+				dlgAlert.setPositiveButton("OK", null);
+				dlgAlert.setCancelable(true);
+				if ("".equals(server)) {
+					dlgAlert.setMessage("Primero Ingrese la Dirección del Servidor.");
+					dlgAlert.create().show();
+				} else if ("".equals(port_str)) {
+					dlgAlert.setMessage("Primero Ingrese el Número del Puerto.");
+					dlgAlert.create().show();
+				} else if ("".equals(port_str)) {
+					dlgAlert.setMessage("Primero Ingrese el Número del Puerto.");
+					dlgAlert.create().show();
+				} else if ("".equals(db)) {
+					dlgAlert.setMessage("Primero Seleccione la Base de Datos.");
+					dlgAlert.create().show();
+				} else if ("".equals(user)) {
+					dlgAlert.setMessage("Ingrese el nombre de Usuario.");
+					dlgAlert.create().show();
+				} else if ("".equals(pass)) {
+					dlgAlert.setMessage("Ingrese el Password.");
 					dlgAlert.create().show();
 				} else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
@@ -114,7 +131,7 @@ public class Settings extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							int port = Integer.parseInt(txtPort.getText().toString());
 							OpenErpConnect oerp = OpenErpConnect.connect(server, port, cmbDb.getSelectedItem().toString(), user, pass);
-							
+
 							AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
 							if (oerp == null) {
 								dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
@@ -123,6 +140,11 @@ public class Settings extends Activity {
 								dlgAlert.setCancelable(true);
 								dlgAlert.create().show();
 							} else {
+								// Guardar los datos
+								configuration conf = new configuration(Settings.this);
+								String saved_user = conf.getKEY_USER();
+								conf.setKEY_USER(user);
+
 								dlgAlert.setTitle("Info").setIcon(android.R.drawable.ic_menu_save);
 								dlgAlert.setMessage("Lo Datos Se Guardaron Correctamente.");
 								dlgAlert.setPositiveButton("OK", null);

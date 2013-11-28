@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Attendance</string>
+    <string name="app_name">Asistencias OAlliance</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <!-- Labels for OpenERP -->
-    <string name="lblHost">Sevidor</string>
+    <string name="lblHost">Servidor</string>
     <string name="lblPort">Puerto</string>
     <string name="lblDB">Base de Datos</string>
     <string name="lblUsername">Nombre de Usuario</string>
     <string name="lblPassword">Password</string>
     
-     <string name="txtHost">192.168.10.103</string>
+     <string name="txtHost">192.168.1.4</string>
      <string name="txtPort">8069</string>
     
 
