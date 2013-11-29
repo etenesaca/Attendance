@@ -49,12 +49,44 @@ public class Settings extends Activity {
 
 		final EditText txtHost = (EditText) findViewById(R.id.txtHost);
 		final EditText txtPort = (EditText) findViewById(R.id.txtPort);
-		final EditText txtxUsername = (EditText) findViewById(R.id.txtxUsername);
+		final EditText txtUsername = (EditText) findViewById(R.id.txtxUsername);
 		final EditText txtPassword = (EditText) findViewById(R.id.txtPassword);
-
-		// ---Combobox de las Base de Datos
 		final Spinner cmbDb = (Spinner) findViewById(R.id.cmbDb);
 
+		// Cargar los datos desde la configuración
+
+		configuration config = new configuration(Settings.this);
+		String Key_SERVER = config.getServer();
+		String Key_PORT = config.getPort();
+		String Key_DATABASE = config.getDataBase();
+
+		txtHost.setText(Key_SERVER);
+		txtPort.setText(config.getPort());
+		txtUsername.setText(config.getLogin());
+		txtPassword.setText(config.getPassword());
+
+		// Verificar si ya hay guardada una configuracion para Cargar la lista
+		// de base de dartos
+		if (Key_SERVER != null && Key_PORT != null && Key_DATABASE != null) {
+			int saved_port = Integer.parseInt(config.getPort());
+			boolean TestConnection = OpenErpConnect.TestConnection(Key_SERVER, saved_port);
+			ArrayAdapter<String> adaptador;
+			if (TestConnection) {
+				String[] list_db = OpenErpConnect.getDatabaseList(Key_SERVER, saved_port);
+				adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
+				cmbDb.setAdapter(adaptador);
+				for (int i = 0; i < list_db.length; i++) {
+					if (list_db[i].equals(Key_DATABASE)) {
+						cmbDb.setSelection(i);
+					}
+				}
+			} else {
+				String[] list_db = {};
+				adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
+			}
+		}
+
+		// ---Combobox de las Base de Datos
 		cmbDb.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
@@ -63,32 +95,48 @@ public class Settings extends Activity {
 				if (server == "" | port_str == "") {
 					return false;
 				}
-				int port = Integer.parseInt(txtPort.getText().toString());
 
-				boolean TestConnection = OpenErpConnect.TestConnection(server, port);
-				ArrayAdapter<String> adaptador;
-				if (TestConnection) {
-					String[] list_db = OpenErpConnect.getDatabaseList(server, port);
-					adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
-				} else {
-					String[] list_db = {};
-					adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
-					// TODO - Enviar un mensaje diciendoque no se puede conectar
-					// al Servidor
-					AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
-					dlgAlert.setTitle("Error de Conexión").setIcon(android.R.drawable.ic_delete);
-					;
-					dlgAlert.setMessage("No se pudo conectar al servidor, Verifque los parametros de Conexión.");
-					dlgAlert.setPositiveButton("OK", null);
-					dlgAlert.setCancelable(true);
-					dlgAlert.create().show();
+				String value_server = txtPort.getText().toString() + "";
+				String value_port = txtPort.getText().toString() + "";
+				if (value_server != "" && value_port != "") {
+					int port = Integer.parseInt(txtPort.getText().toString());
+
+					boolean TestConnection = OpenErpConnect.TestConnection(server, port);
+					ArrayAdapter<String> adaptador;
+					if (TestConnection) {
+						String value_database = "";
+						try {
+							value_database = cmbDb.getSelectedItem().toString();
+						} catch (Exception e) {
+						}
+						String[] list_db = OpenErpConnect.getDatabaseList(server, port);
+						adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
+						cmbDb.setAdapter(adaptador);
+						if (value_database != "") {
+							for (int i = 0; i < list_db.length; i++) {
+								if (list_db[i].equals(value_database)) {
+									cmbDb.setSelection(i);
+								}
+							}
+						}
+					} else {
+						String[] list_db = {};
+						adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
+						AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
+						dlgAlert.setTitle("Error de Conexión").setIcon(android.R.drawable.ic_delete);
+						;
+						dlgAlert.setMessage("No se pudo conectar al servidor, Verifque los parametros de Conexión.");
+						dlgAlert.setPositiveButton("OK", null);
+						dlgAlert.setCancelable(true);
+						dlgAlert.create().show();
+						cmbDb.setAdapter(adaptador);
+					}
 				}
-				cmbDb.setAdapter(adaptador);
 				return false;
 			}
 		});
 
-		// ---Boton Login
+		// ---Boton Guardar
 		Button btnSave = (Button) findViewById(R.id.btnTest);
 		btnSave.setOnClickListener(new OnClickListener() {
 			@Override
@@ -100,7 +148,7 @@ public class Settings extends Activity {
 					db = cmbDb.getSelectedItem().toString();
 				} catch (Exception e) {
 				}
-				final String user = txtxUsername.getText().toString();
+				final String user = txtUsername.getText().toString();
 				final String pass = txtPassword.getText().toString();
 
 				AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
@@ -127,7 +175,7 @@ public class Settings extends Activity {
 					dlgAlert.create().show();
 				} else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
-					builder.setTitle("Guardar").setMessage("¿Guardar los datos Ahora?").setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					builder.setTitle("Guardar").setMessage("¿Guardar los datos Ahora?").setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton("Si", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							int port = Integer.parseInt(txtPort.getText().toString());
 							OpenErpConnect oerp = OpenErpConnect.connect(server, port, cmbDb.getSelectedItem().toString(), user, pass);
@@ -142,8 +190,11 @@ public class Settings extends Activity {
 							} else {
 								// Guardar los datos
 								configuration conf = new configuration(Settings.this);
-								String saved_user = conf.getKEY_USER();
-								conf.setKEY_USER(user);
+								conf.setServer(server);
+								conf.setPort(txtPort.getText().toString());
+								conf.setDataBase(cmbDb.getSelectedItem().toString());
+								conf.setLogin(user);
+								conf.setPassword(pass);
 
 								dlgAlert.setTitle("Info").setIcon(android.R.drawable.ic_menu_save);
 								dlgAlert.setMessage("Lo Datos Se Guardaron Correctamente.");

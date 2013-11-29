@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class configuration {
-	private final String SHARED_PREFS_FILE = "HMPrefs";
-	private final String KEY_EMAIL = "email";
-
-	private final String KEY_SERVER = "";
-	private final String KEY_PORT = "";
-	private final String KEY_DATABASE = "";
-	private final String KEY_USER = "";
-	private final String KEY_PASS = "";
+	// Definimos el nombre del archivo de configuracion
+	private final String SHARED_PREFS_FILE = "AOPrefs";
+	// Definimos las claves que haran referencia a los atributos de
+	// configuración
+	private final String KEY_SERVER = "server";
+	private final String KEY_PORT = "port";
+	private final String KEY_DATABASE = "database";
+	private final String KEY_LOGIN = "login";
+	private final String KEY_PASSWORD = "pass";
 
 	private Context mContext;
 
@@ -19,83 +20,71 @@ public class configuration {
 		mContext = context;
 	}
 
+	// Obtenemos el archivo donde se guardan las preferencias para poder
+	// modificarlas o leerlas
 	private SharedPreferences getSettings() {
 		return mContext.getSharedPreferences(SHARED_PREFS_FILE, 0);
 	}
 
-	public String getUserEmail() {
-		return getSettings().getString(KEY_EMAIL, null);
-	}
+	// Este metodo devuelve el valor almacenado correspondiente a la KEY_LOGIN
+	// en caso de no tener valor
+	// devuelve null
 
-	public void setUserEmail(String email) {
-		SharedPreferences.Editor editor = getSettings().edit();
-		editor.putString(KEY_EMAIL, email);
-		editor.commit();
-	}
-
-
-	/**
-	 * KEY_SERVER
-	 */
-	public String getKEY_SERVER() {
+	public String getServer() {
 		return getSettings().getString(KEY_SERVER, null);
 	}
 
-	public void setKEY_SERVER(String server) {
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_SERVER
+	public void setServer(String server) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_SERVER, server);
 		editor.commit();
 	}
 
-	/**
-	 * KEY_PORT
-	 */
-	public String getKKEY_PORT() {
+	public String getPort() {
 		return getSettings().getString(KEY_PORT, null);
 	}
 
-	public void setKEY_PORT(String host) {
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_PORT
+	public void setPort(String port) {
 		SharedPreferences.Editor editor = getSettings().edit();
-		editor.putString(KEY_PORT, host);
+		editor.putString(KEY_PORT, port);
 		editor.commit();
 	}
 
-	/**
-	 * KEY_DATABASE
-	 */
-	public String getKEY_DATABASE() {
+	public String getLogin() {
+		return getSettings().getString(KEY_LOGIN, null);
+	}
+
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_DATABASE
+	public void setDataBase(String database) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_DATABASE, database);
+		editor.commit();
+	}
+
+	public String getDataBase() {
 		return getSettings().getString(KEY_DATABASE, null);
 	}
 
-	public void setKEY_DATABASE(String db) {
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_LOGIN
+	public void setLogin(String login) {
 		SharedPreferences.Editor editor = getSettings().edit();
-		editor.putString(KEY_DATABASE, db);
+		editor.putString(KEY_LOGIN, login);
 		editor.commit();
 	}
-	
-	/**
-	 * KEY_USER
-	 */
-	public String getKEY_USER() {
-		return getSettings().getString(KEY_USER, null);
+
+	public String getPassword() {
+		return getSettings().getString(KEY_PASSWORD, null);
 	}
-	
-	public void setKEY_USER(String user) {
+
+	public void setPassword(String pass) {
 		SharedPreferences.Editor editor = getSettings().edit();
-		editor.putString(KEY_USER, user);
-		editor.commit();
-	}
-	
-	/**
-	 * KEY_PASS
-	 */
-	public String getKEY_PASS() {
-		return getSettings().getString(KEY_PASS, null);
-	}
-	
-	public void setKEY_PASS(String pass) {
-		SharedPreferences.Editor editor = getSettings().edit();
-		editor.putString(KEY_PASS, pass);
+		editor.putString(KEY_PASSWORD, pass);
 		editor.commit();
 	}
 }
