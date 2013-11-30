@@ -7,14 +7,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 import org.xmlrpc.android.XMLRPCClient;
 import org.xmlrpc.android.XMLRPCException;
 
 import android.content.ContentValues;
-import android.provider.Settings.System;
-import android.support.v4.print.PrintHelper;
 import android.util.Log;
 
 /**
@@ -68,18 +65,6 @@ public class OpenErpConnect {
 
 	public static OpenErpConnect connect(ContentValues connectionParams) {
 		return login(connectionParams);
-	}
-
-	/**
-	 * @return true if the connection could be established, else returns false.
-	 *         The connection will not be stored
-	 */
-	public static Boolean testConnection(String server, Integer port, String db, String user, String pass) {
-		return login(server, port, db, user, pass) != null;
-	}
-
-	public static Boolean testConnection(ContentValues connectionParams) {
-		return login(connectionParams) != null;
 	}
 
 	protected static OpenErpConnect login(ContentValues connectionParams) {
@@ -418,7 +403,7 @@ public class OpenErpConnect {
 	/*
 	 * Metodo para probar la Conexion aun Servidor de OpenERP
 	 */
-	protected static boolean TestConnection(String server, int port) {
+	protected static boolean TestConnection_method(String server, int port) {
 		boolean result = false;
 		try {
 			URL ServerUrl;
@@ -427,12 +412,38 @@ public class OpenErpConnect {
 			Object res = client.call("check_connectivity");
 			result = Boolean.parseBoolean(res + "");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		} catch (XMLRPCException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 		return result;
+	}
+
+	public static void TestConnection_execute(final String server, final int port) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				gl.connected = TestConnection_method(server, port);
+			}
+		});
+		thread.start();
+		long endTimeMillis = System.currentTimeMillis() + 2000;
+		while (thread.isAlive()) {
+			if (System.currentTimeMillis() > endTimeMillis) {
+				gl.connected = false;
+				break;
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException t) {
+			}
+		}
+	}
+
+	public static boolean TestConnection(String server, int port) {
+		TestConnection_execute(server, port);
+		return gl.connected;
 	}
 }

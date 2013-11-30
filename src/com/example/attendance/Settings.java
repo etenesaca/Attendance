@@ -1,38 +1,27 @@
 package com.example.attendance;
 
 //--Imports Agregados para que no vuelva dar error al hacer conexiones XMLRPC
-import android.os.Build;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-//----------------------------------------------------------------------------
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Vector;
-
-import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCException;
-
-import android.os.Bundle;
-import android.os.StrictMode;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
-import android.text.AndroidCharacter;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
+
+//----------------------------------------------------------------------------
 
 @SuppressLint("NewApi")
 public class Settings extends Activity {
@@ -120,15 +109,10 @@ public class Settings extends Activity {
 							}
 						}
 					} else {
+						Toast msg = Toast.makeText(Settings.this, "No se pudo conectar al servidor, Verifique los parametros de Conexión.", Toast.LENGTH_SHORT);
+						msg.show();
 						String[] list_db = {};
 						adaptador = new ArrayAdapter<String>(Settings.this, android.R.layout.simple_spinner_item, list_db);
-						AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
-						dlgAlert.setTitle("Error de Conexión").setIcon(android.R.drawable.ic_delete);
-						;
-						dlgAlert.setMessage("No se pudo conectar al servidor, Verifque los parametros de Conexión.");
-						dlgAlert.setPositiveButton("OK", null);
-						dlgAlert.setCancelable(true);
-						dlgAlert.create().show();
 						cmbDb.setAdapter(adaptador);
 					}
 				}
@@ -196,11 +180,12 @@ public class Settings extends Activity {
 								conf.setLogin(user);
 								conf.setPassword(pass);
 
-								dlgAlert.setTitle("Info").setIcon(android.R.drawable.ic_menu_save);
-								dlgAlert.setMessage("Lo Datos Se Guardaron Correctamente.");
-								dlgAlert.setPositiveButton("OK", null);
-								dlgAlert.setCancelable(true);
-								dlgAlert.create().show();
+								Toast msg = Toast.makeText(Settings.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
+								msg.show();
+
+								// Ir a la ventana de Menu
+								Intent ventana_menu = new Intent("com.example.attendance.Register");
+								startActivity(ventana_menu);
 							}
 						}
 					});
@@ -211,7 +196,6 @@ public class Settings extends Activity {
 					});
 					AlertDialog alert = builder.create();
 					alert.show();
-
 				}
 			}
 		});
