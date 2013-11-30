@@ -161,31 +161,39 @@ public class Settings extends Activity {
 					AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
 					builder.setTitle("Guardar").setMessage("¿Guardar los datos Ahora?").setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton("Si", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							int port = Integer.parseInt(txtPort.getText().toString());
-							OpenErpConnect oerp = OpenErpConnect.connect(server, port, cmbDb.getSelectedItem().toString(), user, pass);
-
 							AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
-							if (oerp == null) {
+							int port = Integer.parseInt(txtPort.getText().toString());
+							if (OpenErpConnect.TestConnection(server, port)) {
+								OpenErpConnect oerp = OpenErpConnect.connect(server, port, cmbDb.getSelectedItem().toString(), user, pass);
+
+								if (oerp == null) {
+									dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
+									dlgAlert.setMessage("Usuario o Contraseña No Válidos.");
+									dlgAlert.setPositiveButton("OK", null);
+									dlgAlert.setCancelable(true);
+									dlgAlert.create().show();
+								} else {
+									// Guardar los datos
+									configuration conf = new configuration(Settings.this);
+									conf.setServer(server);
+									conf.setPort(txtPort.getText().toString());
+									conf.setDataBase(cmbDb.getSelectedItem().toString());
+									conf.setLogin(user);
+									conf.setPassword(pass);
+
+									Toast msg = Toast.makeText(Settings.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
+									msg.show();
+
+									// Ir a la ventana de Menu
+									Intent ventana_menu = new Intent("com.example.attendance.Register");
+									startActivity(ventana_menu);
+								}
+							} else {
 								dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
-								dlgAlert.setMessage("Usuario o Contraseña No Válidos.");
+								dlgAlert.setMessage("No se pudo conectar al servidor, Verifique los parametros de Conexión.");
 								dlgAlert.setPositiveButton("OK", null);
 								dlgAlert.setCancelable(true);
 								dlgAlert.create().show();
-							} else {
-								// Guardar los datos
-								configuration conf = new configuration(Settings.this);
-								conf.setServer(server);
-								conf.setPort(txtPort.getText().toString());
-								conf.setDataBase(cmbDb.getSelectedItem().toString());
-								conf.setLogin(user);
-								conf.setPassword(pass);
-
-								Toast msg = Toast.makeText(Settings.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
-								msg.show();
-
-								// Ir a la ventana de Menu
-								Intent ventana_menu = new Intent("com.example.attendance.Register");
-								startActivity(ventana_menu);
 							}
 						}
 					});
