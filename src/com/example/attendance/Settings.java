@@ -179,12 +179,13 @@ public class Settings extends Activity {
 									// Leer los datos del perfil del Usuario
 									// Logueado
 									Long[] ids = { (long) oerp.mUserId };
-									String[] fields = { "name", "image_small" };
+									String[] fields = { "name", "image", "image_small" };
 									List<HashMap<String, Object>> User_Logged = oerp.read("res.users", ids, fields);
 
 									HashMap<String, Object> aux = User_Logged.get(0);
 									String name_user = (String) aux.get("name");
 									String image_small_64 = (String) aux.get("image_small");
+									String image_64 = (String) aux.get("image");
 
 									// Guardar los datos
 									configuration conf = new configuration(Settings.this);
@@ -195,7 +196,8 @@ public class Settings extends Activity {
 									conf.setPassword(pass);
 
 									conf.setName(name_user);
-									conf.setPhoto(image_small_64);
+									conf.setPhoto(image_64);
+									conf.setPhoto_Small(image_small_64);
 
 									Toast msg = Toast.makeText(Settings.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
 									msg.show();

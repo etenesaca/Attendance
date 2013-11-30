@@ -14,6 +14,7 @@ public class configuration {
 	private final String KEY_LOGIN = "login";
 	private final String KEY_PASSWORD = "pass";
 	private final String KEY_PHOTO = "photo";
+	private final String KEY_PHOTO_SMALL = "photo_small";
 
 	// Datos del Perfil
 	private final String KEY_NAME = "name";
@@ -117,6 +118,18 @@ public class configuration {
 	public void setPhoto(String Photo) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_PHOTO, Photo);
+		editor.commit();
+	}
+	
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_PHOTO SMALL
+	public String getPhoto_Small() {
+		return getSettings().getString(KEY_PHOTO_SMALL, null);
+	}
+
+	public void setPhoto_Small(String Photo_Small) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_PHOTO_SMALL, Photo_Small);
 		editor.commit();
 	}
 }
