@@ -10,9 +10,8 @@
     <string name="lblDB">Base de Datos</string>
     <string name="lblUsername">Nombre de Usuario</string>
     <string name="lblPassword">Password</string>
-    
-     <string name="txtHost">192.168.1.4</string>
-     <string name="txtPort">8069</string>
-    
+    <string name="txtHost">192.168.1.4</string>
+    <string name="txtPort">8069</string>
+    <string name="profile_name">Nombre</string>
 
 </resources>

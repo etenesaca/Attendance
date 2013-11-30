@@ -31,7 +31,7 @@
         android:text="@string/lblHost" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/lblNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtHost"
@@ -44,7 +44,7 @@
         android:id="@+id/txtPort"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/lblNombre"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="number"

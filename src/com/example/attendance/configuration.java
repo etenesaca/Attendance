@@ -13,6 +13,10 @@ public class configuration {
 	private final String KEY_DATABASE = "database";
 	private final String KEY_LOGIN = "login";
 	private final String KEY_PASSWORD = "pass";
+	private final String KEY_PHOTO = "photo";
+
+	// Datos del Perfil
+	private final String KEY_NAME = "name";
 
 	private Context mContext;
 
@@ -30,27 +34,37 @@ public class configuration {
 	// en caso de no tener valor
 	// devuelve null
 
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_SERVER
+
 	public String getServer() {
 		return getSettings().getString(KEY_SERVER, null);
 	}
 
-	// Mediante este metodo se almacena el valor que pasamos correspondiente al
-	// KEY_SERVER
 	public void setServer(String server) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_SERVER, server);
 		editor.commit();
 	}
 
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_PORT
+
 	public String getPort() {
 		return getSettings().getString(KEY_PORT, null);
 	}
 
-	// Mediante este metodo se almacena el valor que pasamos correspondiente al
-	// KEY_PORT
 	public void setPort(String port) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_PORT, port);
+		editor.commit();
+	}
+
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_LOGIN
+	public void setLogin(String login) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_LOGIN, login);
 		editor.commit();
 	}
 
@@ -71,13 +85,7 @@ public class configuration {
 	}
 
 	// Mediante este metodo se almacena el valor que pasamos correspondiente al
-	// KEY_LOGIN
-	public void setLogin(String login) {
-		SharedPreferences.Editor editor = getSettings().edit();
-		editor.putString(KEY_LOGIN, login);
-		editor.commit();
-	}
-
+	// KEY_PASSWORD
 	public String getPassword() {
 		return getSettings().getString(KEY_PASSWORD, null);
 	}
@@ -85,6 +93,30 @@ public class configuration {
 	public void setPassword(String pass) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_PASSWORD, pass);
+		editor.commit();
+	}
+
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_PASSWORD
+	public String getName() {
+		return getSettings().getString(KEY_NAME, null);
+	}
+
+	public void setName(String name) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_NAME, name);
+		editor.commit();
+	}
+
+	// Mediante este metodo se almacena el valor que pasamos correspondiente al
+	// KEY_PHOTO
+	public String getPhoto() {
+		return getSettings().getString(KEY_PHOTO, null);
+	}
+
+	public void setPhoto(String Photo) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_PHOTO, Photo);
 		editor.commit();
 	}
 }

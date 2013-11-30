@@ -1,6 +1,9 @@
 package com.example.attendance;
 
 //--Imports Agregados para que no vuelva dar error al hacer conexiones XMLRPC
+import java.util.HashMap;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -136,7 +139,7 @@ public class Settings extends Activity {
 				final String pass = txtPassword.getText().toString();
 
 				AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Settings.this);
-				dlgAlert.setTitle("Advertencia").setIcon(android.R.drawable.ic_delete);
+				dlgAlert.setTitle("Advertencia").setIcon(android.R.drawable.stat_sys_warning);
 				dlgAlert.setPositiveButton("OK", null);
 				dlgAlert.setCancelable(true);
 				if ("".equals(server)) {
@@ -173,6 +176,16 @@ public class Settings extends Activity {
 									dlgAlert.setCancelable(true);
 									dlgAlert.create().show();
 								} else {
+									// Leer los datos del perfil del Usuario
+									// Logueado
+									Long[] ids = { (long) oerp.mUserId };
+									String[] fields = { "name", "image_small" };
+									List<HashMap<String, Object>> User_Logged = oerp.read("res.users", ids, fields);
+
+									HashMap<String, Object> aux = User_Logged.get(0);
+									String name_user = (String) aux.get("name");
+									String image_small_64 = (String) aux.get("image_small");
+
 									// Guardar los datos
 									configuration conf = new configuration(Settings.this);
 									conf.setServer(server);
@@ -181,11 +194,14 @@ public class Settings extends Activity {
 									conf.setLogin(user);
 									conf.setPassword(pass);
 
+									conf.setName(name_user);
+									conf.setPhoto(image_small_64);
+
 									Toast msg = Toast.makeText(Settings.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
 									msg.show();
 
 									// Ir a la ventana de Menu
-									Intent ventana_menu = new Intent("com.example.attendance.Register");
+									Intent ventana_menu = new Intent("com.example.attendance.Profile");
 									startActivity(ventana_menu);
 								}
 							} else {
