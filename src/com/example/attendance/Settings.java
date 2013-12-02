@@ -226,6 +226,17 @@ public class Settings extends Activity {
 			}
 		});
 
+		// ---Boton Cancelar
+		Button btnCancel = (Button) findViewById(R.id.btnCancel);
+		btnCancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent ventana_menu = new Intent("com.example.attendance.Menu");
+				startActivity(ventana_menu);
+
+			}
+		});
 	}
 
 	@Override

@@ -21,23 +21,31 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int go_home=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000d;
-        public static final int btnTest=0x7f080007;
-        public static final int button1=0x7f080003;
-        public static final int cmbDb=0x7f080008;
-        public static final int lblNombre=0x7f080001;
-        public static final int lblServer=0x7f080005;
-        public static final int pctFoto=0x7f080002;
+        public static final int action_settings=0x7f080014;
+        public static final int btnCancel=0x7f080013;
+        public static final int btnHome=0x7f080006;
+        public static final int btnProfile=0x7f080002;
+        public static final int btnRegister=0x7f080001;
+        public static final int btnSettings=0x7f080004;
+        public static final int btnTest=0x7f080012;
+        public static final int cmbDb=0x7f08000e;
+        public static final int cont_menu_items=0x7f080005;
+        public static final int lblLinkSearch=0x7f080003;
+        public static final int lblNombre=0x7f080007;
+        public static final int lblServer=0x7f08000b;
+        public static final int pctFoto=0x7f080008;
+        public static final int quickContactBadge1=0x7f080009;
         public static final int textView1=0x7f080000;
-        public static final int textView3=0x7f080009;
-        public static final int textView4=0x7f08000c;
-        public static final int txtHost=0x7f080004;
-        public static final int txtPassword=0x7f08000b;
-        public static final int txtPort=0x7f080006;
-        public static final int txtxUsername=0x7f08000a;
+        public static final int textView3=0x7f08000d;
+        public static final int textView4=0x7f080011;
+        public static final int txtHost=0x7f08000a;
+        public static final int txtPassword=0x7f080010;
+        public static final int txtPort=0x7f08000c;
+        public static final int txtxUsername=0x7f08000f;
     }
     public static final class layout {
         public static final int activity_menu=0x7f030000;
@@ -51,11 +59,19 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int go_menu_info=0x7f050010;
         public static final int hello_world=0x7f050002;
         public static final int lblDB=0x7f050005;
         /**  Labels for OpenERP 
          */
         public static final int lblHost=0x7f050003;
+        public static final int lblLinkProfile=0x7f05000d;
+        /**  Labels for OpenERP 
+         */
+        public static final int lblLinkRegister=0x7f05000b;
+        public static final int lblLinkSearch=0x7f05000c;
+        public static final int lblLinkSettings=0x7f05000e;
+        public static final int lblMenu=0x7f05000f;
         public static final int lblPassword=0x7f050007;
         public static final int lblPort=0x7f050004;
         public static final int lblUsername=0x7f050006;

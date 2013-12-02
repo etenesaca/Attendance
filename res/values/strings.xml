@@ -13,5 +13,12 @@
     <string name="txtHost">192.168.1.4</string>
     <string name="txtPort">8069</string>
     <string name="profile_name">Nombre</string>
+    <!-- Labels for OpenERP -->
+    <string name="lblLinkRegister">Registrar Asistencia</string>
+    <string name="lblLinkSearch">Consultas</string>
+    <string name="lblLinkProfile">Perfil</string>
+    <string name="lblLinkSettings">Configuraciones</string>
+    <string name="lblMenu">MENU</string>
+    <string name="go_menu_info">Regresar al Menu Principal</string>
 
 </resources>
