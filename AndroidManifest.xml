@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.attendance"
+    package="com.openerp.attendances"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -8,47 +8,18 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.attendance.Settings"
+            android:name="com.openerp.attendances.Register_Activity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.attendance.Menu"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="com.example.attendance.Menu" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.attendance.Register"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="com.example.attendance.Register" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.attendance.Profile"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="com.example.attendance.Profile" />
-
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>
