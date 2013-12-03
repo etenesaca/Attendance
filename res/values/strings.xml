@@ -18,4 +18,7 @@
     <string name="action_exit">Salir</string>
     <string name="action_acercade">Acerca de</string>
 
+    <!-- Layouts Titles -->
+    <string name="title_config">Configuraciones</string>
+    <string name="title_register">Registrar asistencia</string>
 </resources>

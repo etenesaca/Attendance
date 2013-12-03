@@ -12,12 +12,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/friends"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.openerp.attendances.Activities.Register_Activity"
-            android:label="@string/app_name" >
+            android:name="com.openerp.attendances.activities.RegisterActivity"
+            android:label="@string/title_register" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +25,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.openerp.attendances.Activities.Config_Activity"
-            android:label="@string/app_name" >
+            android:name="com.openerp.attendances.activities.ConfigActivity"
+            android:icon="@drawable/configurations"
+            android:label="@string/title_config" >
             <intent-filter>
                 <action android:name="com.openerp.attendances.Config_Activity" />
 

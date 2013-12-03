@@ -21,7 +21,10 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int configurations=0x7f020000;
+        public static final int connected=0x7f020001;
+        public static final int friends=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
     }
     public static final class id {
         public static final int btnCancel=0x7f08000c;
@@ -64,6 +67,10 @@ public final class R {
         /**  Settings 
          */
         public static final int server=0x7f050002;
+        /**  Layouts Titles 
+         */
+        public static final int title_config=0x7f05000c;
+        public static final int title_register=0x7f05000d;
         public static final int username=0x7f050005;
     }
     public static final class style {
