@@ -39,10 +39,25 @@ public class OpenErpConnect {
 	protected String mDatabase;
 	protected String mUserName;
 	protected String mPassword;
-	protected Integer mUserId;
+	private Integer mUserId;
 	protected URL mUrl;
 
 	protected static final String CONNECTOR_NAME = "OpenErpConnect";
+
+	/**
+	 * @return the mUserId
+	 */
+	public Integer getUserId() {
+		return mUserId;
+	}
+
+	/**
+	 * @param mUserId
+	 *            the mUserId to set
+	 */
+	public void setUserId(Integer mUserId) {
+		this.mUserId = mUserId;
+	}
 
 	/** You should not use the constructor directly, use connect() instead */
 	protected OpenErpConnect(String server, Integer port, String db, String user, String pass, Integer id) throws MalformedURLException {
@@ -103,7 +118,7 @@ public class OpenErpConnect {
 		Long newObjectId = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			newObjectId = ((Integer) client.call("execute", mDatabase, mUserId, mPassword, model, "create", values, context)).longValue();
+			newObjectId = ((Integer) client.call("execute", mDatabase, getUserId(), mPassword, model, "create", values, context)).longValue();
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
@@ -135,7 +150,7 @@ public class OpenErpConnect {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
 			List<Object> parameters = new ArrayList<Object>(11);
 			parameters.add(mDatabase);
-			parameters.add(mUserId);
+			parameters.add(getUserId());
 			parameters.add(mPassword);
 			parameters.add(model);
 			parameters.add("search");
@@ -183,7 +198,7 @@ public class OpenErpConnect {
 		List<HashMap<String, Object>> listOfFieldValues = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			Object[] responseFields = (Object[]) client.call("execute", mDatabase, mUserId, mPassword, model, "read", ids, fields);
+			Object[] responseFields = (Object[]) client.call("execute", mDatabase, getUserId(), mPassword, model, "read", ids, fields);
 			listOfFieldValues = new ArrayList<HashMap<String, Object>>(responseFields.length);
 			for (Object objectFields : responseFields) {
 				listOfFieldValues.add((HashMap<String, Object>) objectFields);
@@ -199,7 +214,7 @@ public class OpenErpConnect {
 		Boolean writeOk = false;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			writeOk = (Boolean) client.call("execute", mDatabase, mUserId, mPassword, model, "write", ids, values, context);
+			writeOk = (Boolean) client.call("execute", mDatabase, getUserId(), mPassword, model, "write", ids, values, context);
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
@@ -211,7 +226,7 @@ public class OpenErpConnect {
 		Boolean unlinkOk = false;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			unlinkOk = (Boolean) client.call("execute", mDatabase, mUserId, mPassword, model, "unlink", ids);
+			unlinkOk = (Boolean) client.call("execute", mDatabase, getUserId(), mPassword, model, "unlink", ids);
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
@@ -286,7 +301,7 @@ public class OpenErpConnect {
 		try {
 			List<Object> paramsList = new ArrayList<Object>(6);
 			paramsList.add(mDatabase);
-			paramsList.add(mUserId);
+			paramsList.add(getUserId());
 			paramsList.add(mPassword);
 			paramsList.add(model);
 			paramsList.add(method);
@@ -329,7 +344,7 @@ public class OpenErpConnect {
 		stringConn.append("database: " + mDatabase + "\n");
 		stringConn.append("user: " + mUserName + "\n");
 		stringConn.append("password: " + mPassword + "\n");
-		stringConn.append("id: " + mUserId + "\n");
+		stringConn.append("id: " + getUserId() + "\n");
 		return stringConn.toString();
 	}
 
@@ -367,7 +382,7 @@ public class OpenErpConnect {
 	/*
 	 * Metodo para cargar las base de datos de Un Sevidor de OpenERP
 	 */
-	protected static String[] getDatabaseList(String server, int port) {
+	public static String[] getDatabaseList(String server, int port) {
 		String[] result = null;
 
 		try {
