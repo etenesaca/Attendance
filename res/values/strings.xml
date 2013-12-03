@@ -2,7 +2,20 @@
 <resources>
 
     <string name="app_name">Attendances</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+
+    <!-- Settings -->
+    <string name="server">Servidor</string>
+    <string name="port">Puerto</string>
+    <string name="database">Base de Datos</string>
+    <string name="username">Nombre de Usuario</string>
+    <string name="password">Password</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- Menu -->
+    <string name="action_settings">Configuraciones</string>
+    <string name="action_exit">Salir</string>
+    <string name="action_acercade">Acerca de</string>
 
 </resources>
