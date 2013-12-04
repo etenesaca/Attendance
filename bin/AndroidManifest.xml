@@ -50,6 +50,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- Consultas -->
+        <activity
+            android:name="com.openerp.attendances.activities.SearchActivity"
+            android:icon="@drawable/configurations"
+            android:label="@string/title_config" >
+            <intent-filter>
+                <action android:name="com.openerp.attendances.Profile_Activity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

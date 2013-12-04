@@ -3,6 +3,11 @@
 
     <string name="app_name">Attendances</string>
     <string name="hello_world">Hello world!</string>
+    <!-- Botones -->
+    <string name="refresh">Volver a Cargar</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="register_attendance">--Registrar Asitencia--</string>
 
     <!-- Settings -->
     <string name="server">Servidor</string>
@@ -10,15 +15,18 @@
     <string name="database">Base de Datos</string>
     <string name="username">Nombre de Usuario</string>
     <string name="password">Password</string>
-    <string name="save">Guardar</string>
-    <string name="cancel">Cancelar</string>
 
     <!-- Menu -->
     <string name="action_settings">Configuraciones</string>
     <string name="action_exit">Salir</string>
     <string name="action_acercade">Acerca de</string>
+    <string name="action_search_register">Consultas</string>
 
     <!-- Layouts Titles -->
     <string name="title_config">Configuraciones</string>
     <string name="title_register">Registrar asistencia</string>
+
+    <!-- Messages -->
+    <string name="error_connection">Error de Conexión</string>
+
 </resources>
