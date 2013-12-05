@@ -60,7 +60,7 @@ public class OpenErpConnect {
 	}
 
 	/** You should not use the constructor directly, use connect() instead */
-	protected OpenErpConnect(String server, Integer port, String db, String user, String pass, Integer id) throws MalformedURLException {
+	public OpenErpConnect(String server, Integer port, String db, String user, String pass, Integer id) throws MalformedURLException {
 		mServer = server;
 		mPort = port;
 		mDatabase = db;
@@ -129,6 +129,10 @@ public class OpenErpConnect {
 		return search(model, false, 0, 0, null, false, conditions);
 	}
 
+	public Long[] search(String model, Object[] conditions, Integer limit) {
+		return search(model, false, 0, limit, null, false, conditions);
+	}
+
 	public Long[] search(String model, boolean count, Object[] conditions) {
 		return search(model, count, 0, 0, null, false, conditions);
 	}
@@ -161,9 +165,15 @@ public class OpenErpConnect {
 			parameters.add(null);
 			parameters.add(count);
 			if (count) { // We just want the number of items
-				result = new Long[] { ((Integer) client.call("execute", parameters)).longValue() };
+				// result = new Long[] { ((Integer) client.call("execute",
+				// parameters)).longValue() };
+				result = new Long[] { ((Integer) client.call("execute", mDatabase, getUserId(), mPassword, model, "search", conditions, offset, limit)).longValue() };
+
 			} else { // Returning the list of matching item id's
-				Object[] responseIds = (Object[]) client.call("execute", parameters);
+				Object[] responseIds = (Object[]) client.call("execute", mDatabase, getUserId(), mPassword, model, "search", conditions, offset, limit);
+				// Object[] responseIds = (Object[]) client.call("execute",
+				// parameters);
+
 				// In case no matching records were found, an empty list is
 				// returned by the ws
 				// The ids are returned as Integer, but we want Long for better
@@ -401,10 +411,8 @@ public class OpenErpConnect {
 			return res;
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (XMLRPCException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -459,5 +467,44 @@ public class OpenErpConnect {
 	public static boolean TestConnection(String server, int port) {
 		TestConnection_execute(server, port);
 		return gl.connected;
+	}
+
+	// Verificar los datos antes de registrar entrada o salida
+	public String ValidateRegister() {
+		String result = "";
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object resp = client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "validate_register");
+			result = resp + "";
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Verificar los datos antes de registrar entrada o salida
+	public boolean Module_Installed(String module_name) {
+		boolean result = false;
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object resp = client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "module_installed", module_name);
+			result = Boolean.parseBoolean(resp + "");
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Verificar los datos antes de registrar entrada o salida
+	public boolean Register_Attendance(Integer employee_id) {
+		boolean result = false;
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object resp = client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "register_attendance", employee_id);
+			result = Boolean.parseBoolean(resp + "");
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

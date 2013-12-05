@@ -14,6 +14,8 @@ public class Configuration {
 	private final String KEY_LOGIN = "login";
 	private final String KEY_PASSWORD = "pass";
 	private final String KEY_PHOTO = "photo";
+	private final String KEY_USERID = "userid";
+	private final String KEY_EMPLOYEEID = "employeeid";
 
 	// Datos del Perfil
 	private final String KEY_NAME = "name";
@@ -118,6 +120,32 @@ public class Configuration {
 	public void setPhoto(String Photo) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_PHOTO, Photo);
+		editor.commit();
+	}
+
+	/*
+	 * USERID
+	 */
+	public String getUserID() {
+		return getSettings().getString(KEY_USERID, null);
+	}
+
+	public void setUserID(String UserID) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_USERID, UserID);
+		editor.commit();
+	}
+
+	/*
+	 * EMPLOYEEID
+	 */
+	public String getEmployeeID() {
+		return getSettings().getString(KEY_EMPLOYEEID, null);
+	}
+
+	public void setEmployeeID(String EmployeeID) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_EMPLOYEEID, EmployeeID);
 		editor.commit();
 	}
 }

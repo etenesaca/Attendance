@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/contenedor_menu"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center" >
+        android:layout_gravity="center"
+        android:orientation="vertical" >
 
         <Button
             android:id="@+id/btnRegisterAttendance"
@@ -47,6 +48,13 @@
             android:layout_marginTop="16dp"
             android:text="@string/register_attendance"
             tools:ignore="ObsoleteLayoutParam" />
+
+        <ImageView
+            android:id="@+id/imgAction"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:contentDescription="@string/register_attendance"
+            android:src="@drawable/up" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,6 +78,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/error_connection"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/Red" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contenedor_without_account"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contenedor_error_connection"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center" >
+
+        <TextView
+            android:id="@+id/lblWithout_account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/without_account"
+            android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/Red" />
     </LinearLayout>

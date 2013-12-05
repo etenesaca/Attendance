@@ -17,6 +17,7 @@
     <string name="password">Password</string>
 
     <!-- Menu -->
+    <string name="action_refresh">Actualizar</string>
     <string name="action_settings">Configuraciones</string>
     <string name="action_exit">Salir</string>
     <string name="action_acercade">Acerca de</string>
@@ -28,5 +29,6 @@
 
     <!-- Messages -->
     <string name="error_connection">Error de Conexión</string>
+    <string name="without_account">Primero agregue una Cuenta en Configuraciones</string>
 
 </resources>

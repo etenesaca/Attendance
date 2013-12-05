@@ -182,24 +182,31 @@ public final class R {
         public static final int backgroun_user=0x7f020000;
         public static final int configurations=0x7f020001;
         public static final int connected=0x7f020002;
-        public static final int friends=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
+        public static final int down=0x7f020003;
+        public static final int friends=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
+        public static final int stop=0x7f020006;
+        public static final int up=0x7f020007;
     }
     public static final class id {
         public static final int btnCancel=0x7f09000c;
-        public static final int btnRefresh=0x7f090021;
+        public static final int btnRefresh=0x7f090022;
         public static final int btnRegisterAttendance=0x7f09001f;
         public static final int btnSave=0x7f09000b;
         public static final int cmbDb=0x7f090006;
-        public static final int contenedor_error_connection=0x7f090020;
+        public static final int contenedor_error_connection=0x7f090021;
         public static final int contenedor_menu=0x7f09001b;
         public static final int contenedor_register=0x7f09001e;
+        public static final int contenedor_without_account=0x7f090024;
         public static final int imageView1=0x7f090000;
-        public static final int lblErrorConenction=0x7f090022;
-        public static final int mnAcercade=0x7f090025;
-        public static final int mnExit=0x7f090026;
-        public static final int mnSearchRegisters=0x7f090023;
-        public static final int mnSettings=0x7f090024;
+        public static final int imgAction=0x7f090020;
+        public static final int lblErrorConenction=0x7f090023;
+        public static final int lblWithout_account=0x7f090025;
+        public static final int mnAcercade=0x7f090029;
+        public static final int mnExit=0x7f09002a;
+        public static final int mnRefresh=0x7f090026;
+        public static final int mnSearchRegisters=0x7f090027;
+        public static final int mnSettings=0x7f090028;
         public static final int pctFoto=0x7f09001d;
         public static final int textView1=0x7f090001;
         public static final int textView10=0x7f090017;
@@ -236,18 +243,19 @@ public final class R {
         public static final int menu_register=0x7f080000;
     }
     public static final class string {
-        public static final int action_acercade=0x7f05000d;
-        public static final int action_exit=0x7f05000c;
-        public static final int action_search_register=0x7f05000e;
+        public static final int action_acercade=0x7f05000e;
+        public static final int action_exit=0x7f05000d;
         /**  Menu 
          */
-        public static final int action_settings=0x7f05000b;
+        public static final int action_refresh=0x7f05000b;
+        public static final int action_search_register=0x7f05000f;
+        public static final int action_settings=0x7f05000c;
         public static final int app_name=0x7f050000;
         public static final int cancel=0x7f050004;
         public static final int database=0x7f050008;
         /**  Messages 
          */
-        public static final int error_connection=0x7f050011;
+        public static final int error_connection=0x7f050012;
         public static final int hello_world=0x7f050001;
         public static final int password=0x7f05000a;
         public static final int port=0x7f050007;
@@ -261,9 +269,10 @@ public final class R {
         public static final int server=0x7f050006;
         /**  Layouts Titles 
          */
-        public static final int title_config=0x7f05000f;
-        public static final int title_register=0x7f050010;
+        public static final int title_config=0x7f050010;
+        public static final int title_register=0x7f050011;
         public static final int username=0x7f050009;
+        public static final int without_account=0x7f050013;
     }
     public static final class style {
         /** 

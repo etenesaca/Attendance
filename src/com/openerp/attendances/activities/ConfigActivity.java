@@ -45,7 +45,7 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 		setContentView(R.layout.activity_config);
 
 		// Lineas para habilitar el acceso a la red y poder conectarse al
-		// servidor de OpenERP
+		// servidor de OpenERP en el Hilo Principal
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 
@@ -104,6 +104,7 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btnSave:
+			// Guardar Los datos del Empleado
 			String port_str = txtPort.getText().toString();
 			final String Server = txtServer.getText().toString();
 			String db = "";
@@ -141,46 +142,60 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 				builder.setTitle("Guardar").setMessage("¿Guardar los datos Ahora?").setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton("Si", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						AlertDialog.Builder dlgAlert = new AlertDialog.Builder(ConfigActivity.this);
+						dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
+						dlgAlert.setPositiveButton("OK", null);
+						dlgAlert.setCancelable(true);
+
 						int Port = Integer.parseInt(txtPort.getText().toString());
 						if (OpenErpConnect.TestConnection(Server, Port)) {
 							OpenErpConnect oerp = OpenErpConnect.connect(Server, Port, cmbDb.getSelectedItem().toString(), user, pass);
 
 							if (oerp == null) {
-								dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
 								dlgAlert.setMessage("Usuario o Contraseña No Válidos.");
-								dlgAlert.setPositiveButton("OK", null);
-								dlgAlert.setCancelable(true);
 								dlgAlert.create().show();
 							} else {
-								// Leer los datos del perfil del Usuario
-								// Logueado
-								Long[] ids = { (long) oerp.getUserId() };
-								String[] fields = { "name", "image", "image_small" };
-								List<HashMap<String, Object>> User_Logged = oerp.read("res.users", ids, fields);
+								// Verificar que la base de datos tenga
+								// instalado el modulo Control de Horario
+								if (!oerp.Module_Installed("control_horario")) {
+									dlgAlert.setMessage("La base de datos seleccionada no tiene instalado el Modulo de Control del Horario.");
+									dlgAlert.create().show();
+								} else {
+									// Verificar que el Usuario sea un empleado
+									Long[] employee_ids = oerp.search("control.horario.employee", new Object[] { new Object[] { "user_id", "=", oerp.getUserId() } }, 1);
+									if (employee_ids.length < 1) {
+										dlgAlert.setMessage("La credenciales ingresadas no pertenecen a un Empleado.");
+										dlgAlert.create().show();
+									} else {
+										// Leer los datos del perfil del Usuario
+										// Logueado
+										Long[] ids = { (long) oerp.getUserId() };
+										String[] fields = { "name", "image", "image_small" };
+										List<HashMap<String, Object>> User_Logged = oerp.read("res.users", ids, fields);
 
-								HashMap<String, Object> aux = User_Logged.get(0);
-								String name_user = (String) aux.get("name");
-								String image_64 = (String) aux.get("image");
+										HashMap<String, Object> aux = User_Logged.get(0);
+										String name_user = (String) aux.get("name");
+										String image_64 = (String) aux.get("image");
 
-								// Guardar los datos
-								config.setServer(Server);
-								config.setPort(txtPort.getText().toString());
-								config.setDataBase(cmbDb.getSelectedItem().toString());
-								config.setLogin(user);
-								config.setPassword(pass);
+										// Guardar los datos
+										config.setServer(Server);
+										config.setPort(txtPort.getText().toString());
+										config.setDataBase(cmbDb.getSelectedItem().toString());
+										config.setLogin(user);
+										config.setPassword(pass);
+										config.setUserID(oerp.getUserId() + "");
+										config.setEmployeeID(employee_ids[0] + "");
 
-								config.setName(name_user);
-								config.setPhoto(image_64);
+										config.setName(name_user);
+										config.setPhoto(image_64);
 
-								Toast msg = Toast.makeText(ConfigActivity.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
-								msg.show();
-								finish();
+										Toast msg = Toast.makeText(ConfigActivity.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
+										msg.show();
+										finish();
+									}
+								}
 							}
 						} else {
-							dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
 							dlgAlert.setMessage("No se pudo conectar al servidor, Verifique los parametros de Conexión.");
-							dlgAlert.setPositiveButton("OK", null);
-							dlgAlert.setCancelable(true);
 							dlgAlert.create().show();
 						}
 					}
