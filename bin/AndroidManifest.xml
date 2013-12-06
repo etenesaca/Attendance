@@ -54,8 +54,8 @@
         <!-- Consultas -->
         <activity
             android:name="com.openerp.attendances.activities.SearchActivity"
-            android:icon="@drawable/configurations"
-            android:label="@string/title_config" >
+            android:icon="@drawable/find"
+            android:label="@string/title_search" >
             <intent-filter>
                 <action android:name="com.openerp.attendances.Profile_Activity" />
 

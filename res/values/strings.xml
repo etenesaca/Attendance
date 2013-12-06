@@ -24,11 +24,19 @@
     <string name="action_search_register">Consultas</string>
 
     <!-- Layouts Titles -->
+    <string name="title_search">Registros de Asistencia</string>
     <string name="title_config">Configuraciones</string>
     <string name="title_register">Registrar asistencia</string>
 
     <!-- Messages -->
     <string name="error_connection">Error de Conexión</string>
     <string name="without_account">Primero agregue una Cuenta en Configuraciones</string>
+
+    <!-- Search -->
+    <string name="yesterday">Ayer</string>
+    <string name="today">Hoy</string>
+    <string name="this_week">Semana</string>
+    <string name="this_month">Mes</string>
+    <string name="search">Buscar</string>
 
 </resources>
