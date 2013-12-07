@@ -508,16 +508,14 @@ public class OpenErpConnect {
 		return result;
 	}
 
-	// Verificar los datos antes de registrar entrada o salida
-	public String[] getRegisters(String From, String To, int employee_id) {
-		String[] result = null;
+	// Obtenner los registro de asistencia
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getRegisters(String From, String To, int employee_id) {
+		HashMap<String, Object> result = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			Object[] registers = (Object[]) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRegistersbyDate", From, To, employee_id);
-			result = new String[registers.length];
-			for (int i = 0; i < registers.length; i++) {
-				result[i] = (String) registers[i];
-			}
+			Object registers_result = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRegistersbyDate", From, To, employee_id);
+			result = (HashMap<String, Object>) registers_result;
 		} catch (XMLRPCException e) {
 			e.printStackTrace();
 		}

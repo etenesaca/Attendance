@@ -3,6 +3,10 @@ package com.openerp.attendances.activities;
 import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+
+import org.xmlrpc.android.XMLRPCClient;
+import org.xmlrpc.android.XMLRPCException;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -65,6 +69,7 @@ public class SearchActivity extends Activity {
 		BuildSearchRegister();
 	}
 
+	@SuppressWarnings("unchecked")
 	void BuildSearchRegister() {
 		// Mandar a buscar registros con un rango de fechas
 		String Server = config.getServer();
@@ -80,9 +85,24 @@ public class SearchActivity extends Activity {
 				try {
 					OpenErpConnect conn = new OpenErpConnect(Server, port, database, user, pass, uid);
 					if (conn != null) {
+						HashMap<String, Object> registers_dict = conn.getRegisters(txtFrom.getText().toString(), txtTo.getText().toString(), Integer.parseInt(config.getEmployeeID()));
+						Object[] attendances = (Object[]) registers_dict.get("attendance_registers");
+
+						// Procesar los registros de asistencia
 						ArrayAdapter<String> adaptador;
-						String[] register_list = conn.getRegisters(txtFrom.getText().toString(), txtTo.getText().toString(), Integer.parseInt(config.getEmployeeID()));
-						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, register_list);
+						String[] attandence_list = null;
+
+						attandence_list = new String[attendances.length];
+						for (int i = 0; i < attendances.length; i++) {
+							HashMap<String, Object> item = (HashMap<String, Object>) attendances[i];
+							String date = (String) item.get("date");
+							String time = (String) item.get("time");
+							String duration = (String) item.get("duration");
+							String type = (String) item.get("type");
+							attandence_list[i] = date + " [" + time + "]" + " " + duration + " " + type;
+						}
+
+						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, attandence_list);
 						lstRegisters.setAdapter(adaptador);
 					}
 				} catch (MalformedURLException e) {
