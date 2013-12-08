@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Attendances</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="total_hours">Total de Horas</string>
     <!-- Botones -->
     <string name="refresh">Volver a Cargar</string>
     <string name="save">Guardar</string>

@@ -5,9 +5,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-import org.xmlrpc.android.XMLRPCClient;
-import org.xmlrpc.android.XMLRPCException;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -18,6 +15,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.openerp.attendances.Configuration;
@@ -30,12 +30,33 @@ public class SearchActivity extends Activity {
 	private Configuration config;
 	private EditText txtFrom;
 	private EditText txtTo;
-	private ListView lstRegisters;
+	private TextView txtTotalHours;
+	private ListView lstAttendances;
+	private ListView lstExtraHours;
+
+	TabHost contenedorPestania;
+	TabSpec pestania;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
+
+		// Inicializar las Pestañas
+		contenedorPestania = (TabHost) findViewById(android.R.id.tabhost);
+		contenedorPestania.setup();
+
+		pestania = contenedorPestania.newTabSpec("pestana1");
+		pestania.setContent(R.id.tabAttendances);
+		pestania.setIndicator("Asistencias", getResources().getDrawable(android.R.drawable.ic_menu_help));
+		contenedorPestania.addTab(pestania);
+
+		pestania = contenedorPestania.newTabSpec("pestana1");
+		pestania.setContent(R.id.tabExtraHours);
+		pestania.setIndicator("Reajustes", getResources().getDrawable(android.R.drawable.ic_menu_help));
+		contenedorPestania.addTab(pestania);
+
+		contenedorPestania.setCurrentTab(0);
 
 		// Lineas para habilitar el acceso a la red y poder conectarse al
 		// servidor de OpenERP en el Hilo Principal
@@ -48,7 +69,9 @@ public class SearchActivity extends Activity {
 		// Declaracion de Elementos
 		txtFrom = (EditText) findViewById(R.id.txtFrom);
 		txtTo = (EditText) findViewById(R.id.txtTo);
-		lstRegisters = (ListView) findViewById(R.id.lstRegisters);
+		txtTotalHours = (TextView) findViewById(R.id.txtTotalHours);
+		lstAttendances = (ListView) findViewById(R.id.lstAttendances);
+		lstExtraHours = (ListView) findViewById(R.id.lstExtraHours);
 
 		// Poner por defecto la fecha del dia de Hoy
 		Calendar fecha = new GregorianCalendar();
@@ -64,13 +87,13 @@ public class SearchActivity extends Activity {
 	}
 
 	public void SearchOnClick(View view) {
-		Toast msg = Toast.makeText(this, "Buscando..", Toast.LENGTH_SHORT);
-		msg.show();
 		BuildSearchRegister();
 	}
 
 	@SuppressWarnings("unchecked")
 	void BuildSearchRegister() {
+		Toast msg = Toast.makeText(this, "Buscando..", Toast.LENGTH_SHORT);
+		msg.show();
 		// Mandar a buscar registros con un rango de fechas
 		String Server = config.getServer();
 		String database = config.getDataBase();
@@ -86,10 +109,10 @@ public class SearchActivity extends Activity {
 					OpenErpConnect conn = new OpenErpConnect(Server, port, database, user, pass, uid);
 					if (conn != null) {
 						HashMap<String, Object> registers_dict = conn.getRegisters(txtFrom.getText().toString(), txtTo.getText().toString(), Integer.parseInt(config.getEmployeeID()));
-						Object[] attendances = (Object[]) registers_dict.get("attendance_registers");
+						ArrayAdapter<String> adaptador;
 
 						// Procesar los registros de asistencia
-						ArrayAdapter<String> adaptador;
+						Object[] attendances = (Object[]) registers_dict.get("attendance_registers");
 						String[] attandence_list = null;
 
 						attandence_list = new String[attendances.length];
@@ -103,7 +126,34 @@ public class SearchActivity extends Activity {
 						}
 
 						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, attandence_list);
-						lstRegisters.setAdapter(adaptador);
+						lstAttendances.setAdapter(adaptador);
+
+						// Procesar Horas Extras
+						Object[] extra_hours = (Object[]) registers_dict.get("extra_hours");
+						String[] extra_hours_list = null;
+
+						extra_hours_list = new String[extra_hours.length];
+						for (int i = 0; i < extra_hours.length; i++) {
+							HashMap<String, Object> item = (HashMap<String, Object>) extra_hours[i];
+							String date = (String) item.get("date");
+							String hours = (String) item.get("hours");
+							String description = (String) item.get("description");
+							String type = (String) item.get("type");
+							if (type.equals("add")) {
+								type = "+";
+							} else {
+								type = "-";
+							}
+							extra_hours_list[i] = date + " [" + type + hours + "]" + " " + description;
+						}
+
+						// Sacar el total de Horas
+						String total_hours = registers_dict.get("total_hours") + "";
+						txtTotalHours.setText("Total de horas: " + total_hours);
+
+						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, extra_hours_list);
+						lstExtraHours.setAdapter(adaptador);
+
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();

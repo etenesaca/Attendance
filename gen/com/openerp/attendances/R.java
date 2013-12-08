@@ -200,19 +200,22 @@ public final class R {
         public static final int contenedor_error_connection=0x7f090021;
         public static final int contenedor_menu=0x7f09001b;
         public static final int contenedor_register=0x7f09001e;
+        public static final int contenedor_search=0x7f090026;
         public static final int contenedor_without_account=0x7f090024;
         public static final int imageView1=0x7f090000;
         public static final int imgAction=0x7f090020;
         public static final int lblErrorConenction=0x7f090023;
         public static final int lblWithout_account=0x7f090025;
-        public static final int linearLayout1=0x7f090026;
-        public static final int lstRegisters=0x7f09002a;
-        public static final int mnAcercade=0x7f09002e;
-        public static final int mnExit=0x7f09002f;
-        public static final int mnRefresh=0x7f09002b;
-        public static final int mnSearchRegisters=0x7f09002c;
-        public static final int mnSettings=0x7f09002d;
+        public static final int lstAttendances=0x7f09002c;
+        public static final int lstExtraHours=0x7f09002e;
+        public static final int mnAcercade=0x7f090032;
+        public static final int mnExit=0x7f090033;
+        public static final int mnRefresh=0x7f09002f;
+        public static final int mnSearchRegisters=0x7f090030;
+        public static final int mnSettings=0x7f090031;
         public static final int pctFoto=0x7f09001d;
+        public static final int tabAttendances=0x7f09002b;
+        public static final int tabExtraHours=0x7f09002d;
         public static final int textView1=0x7f090001;
         public static final int textView10=0x7f090017;
         public static final int textView11=0x7f090016;
@@ -238,6 +241,7 @@ public final class R {
         public static final int txtPort=0x7f090004;
         public static final int txtServer=0x7f090002;
         public static final int txtTo=0x7f090028;
+        public static final int txtTotalHours=0x7f09002a;
         public static final int txtUsername=0x7f090008;
     }
     public static final class layout {
@@ -263,7 +267,6 @@ public final class R {
         /**  Messages 
          */
         public static final int error_connection=0x7f050013;
-        public static final int hello_world=0x7f050001;
         public static final int password=0x7f05000a;
         public static final int port=0x7f050007;
         /**  Botones 
@@ -283,6 +286,7 @@ public final class R {
          */
         public static final int title_search=0x7f050010;
         public static final int today=0x7f050016;
+        public static final int total_hours=0x7f050001;
         public static final int username=0x7f050009;
         public static final int without_account=0x7f050014;
         /**  Search 
