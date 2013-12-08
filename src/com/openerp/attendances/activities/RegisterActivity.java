@@ -37,6 +37,14 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private Button btnRefresh;
 	private Button btnRegisterAttendance;
 	private TextView txtNombre;
+
+	@Override
+	protected void onStart() {
+		refresh_connection();
+		refresh_user();
+		super.onStart();
+	}
+
 	private LinearLayout contenedor_error_connection;
 	private LinearLayout contenedor_register;
 	private LinearLayout contenedor_without_account;
@@ -46,7 +54,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register_);
+		setContentView(R.layout.activity_register);
 
 		// Lineas para habilitar el acceso a la red y poder conectarse al
 		// servidor de OpenERP en el Hilo Principal
@@ -72,9 +80,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		contenedor_error_connection = (LinearLayout) findViewById(R.id.contenedor_error_connection);
 		contenedor_register = (LinearLayout) findViewById(R.id.contenedor_register);
 		contenedor_without_account = (LinearLayout) findViewById(R.id.contenedor_without_account);
-
-		refresh_connection();
-		refresh_user();
 	}
 
 	void refresh_user() {
