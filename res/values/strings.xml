@@ -16,12 +16,18 @@
     <string name="username">Nombre de Usuario</string>
     <string name="password">Password</string>
 
-    <!-- Menu -->
+    <!-- Menu Register -->
     <string name="action_refresh">Actualizar</string>
     <string name="action_settings">Configuraciones</string>
     <string name="action_exit">Salir</string>
     <string name="action_acercade">Acerca de</string>
     <string name="action_search_register">Consultas</string>
+
+    <!-- Menu Search -->
+    <string name="action_search_yesterday">Ayer</string>
+    <string name="action_search_today">Hoy</string>
+    <string name="action_search_this_week">Ésta semana</string>
+    <string name="action_search_this_month">Este mes</string>
 
     <!-- Layouts Titles -->
     <string name="title_search">Registros de Asistencia</string>

@@ -11,6 +11,9 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -160,5 +163,108 @@ public class SearchActivity extends Activity {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_search, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		String Server = config.getServer();
+		String database = config.getDataBase();
+		String user = config.getLogin();
+		String pass = config.getPassword();
+
+		switch (item.getItemId()) {
+		case R.id.mnSearch_Today:
+			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
+				Integer port = Integer.parseInt(config.getPort());
+				Integer uid = Integer.parseInt(config.getUserID());
+				OpenErpConnect conn;
+				try {
+					conn = new OpenErpConnect(Server, port, database, user, pass, uid);
+					if (conn != null) {
+						HashMap<String, Object> range_dates = conn.getRangeDates_today();
+						txtFrom.setText(range_dates.get("date_start") + "");
+						txtTo.setText(range_dates.get("date_stop") + "");
+					}
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+				BuildSearchRegister();
+			}
+			break;
+
+		case R.id.mnSearch_Yesterday:
+			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
+				Integer port = Integer.parseInt(config.getPort());
+				Integer uid = Integer.parseInt(config.getUserID());
+				OpenErpConnect conn;
+				try {
+					conn = new OpenErpConnect(Server, port, database, user, pass, uid);
+					if (conn != null) {
+						HashMap<String, Object> range_dates = conn.getRangeDates_yesterday();
+						txtFrom.setText(range_dates.get("date_start") + "");
+						txtTo.setText(range_dates.get("date_stop") + "");
+					}
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+				BuildSearchRegister();
+			}
+			break;
+
+		case R.id.mnSearch_This_Week:
+			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
+				Integer port = Integer.parseInt(config.getPort());
+				Integer uid = Integer.parseInt(config.getUserID());
+				OpenErpConnect conn;
+				try {
+					conn = new OpenErpConnect(Server, port, database, user, pass, uid);
+					if (conn != null) {
+						HashMap<String, Object> range_dates = conn.getRangeDates_this_week();
+						txtFrom.setText(range_dates.get("date_start") + "");
+						txtTo.setText(range_dates.get("date_stop") + "");
+					}
+					BuildSearchRegister();
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+
+		case R.id.mnSearch_This_Month:
+			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
+				Integer port = Integer.parseInt(config.getPort());
+				Integer uid = Integer.parseInt(config.getUserID());
+				OpenErpConnect conn;
+				try {
+					conn = new OpenErpConnect(Server, port, database, user, pass, uid);
+					if (conn != null) {
+						HashMap<String, Object> range_dates = conn.getRangeDates_this_month();
+						txtFrom.setText(range_dates.get("date_start") + "");
+						txtTo.setText(range_dates.get("date_stop") + "");
+					}
+					BuildSearchRegister();
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+
+		case R.id.mnSearch_Exit:
+			// Para cerrara las ventana se busquedas
+			finish();
+			break;
+
+		default:
+			break;
+		}
+		return true;
 	}
 }

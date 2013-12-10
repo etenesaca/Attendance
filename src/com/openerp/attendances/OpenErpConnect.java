@@ -4,13 +4,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.xmlrpc.android.XMLRPCClient;
 import org.xmlrpc.android.XMLRPCException;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.util.Log;
 
@@ -516,6 +521,101 @@ public class OpenErpConnect {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
 			Object registers_result = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRegistersbyDate", From, To, employee_id);
 			result = (HashMap<String, Object>) registers_result;
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	private HashMap<String, Object> convertDatetoString(HashMap<String, Object> range_dates) {
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+		int year, month, day;
+		Calendar cal = Calendar.getInstance();
+
+		// DATE START
+		String date_start = range_dates.get("date_start") + "";
+		Date date_start_dt;
+		try {
+			date_start_dt = formatoFecha.parse(date_start);
+			cal.setTime(date_start_dt);
+			month = cal.get(Calendar.MONTH) + 1;
+			day = cal.get(Calendar.DAY_OF_MONTH);
+			year = cal.get(Calendar.YEAR);
+			date_start = day + "/" + month + "/" + year;
+			range_dates.put("date_start", date_start);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		// DATE STOP
+		String date_stop = range_dates.get("date_stop") + "";
+		Date date_stop_dt;
+		try {
+			date_stop_dt = formatoFecha.parse(date_stop);
+			cal.setTime(date_stop_dt);
+			month = cal.get(Calendar.MONTH) + 1;
+			day = cal.get(Calendar.DAY_OF_MONTH);
+			year = cal.get(Calendar.YEAR);
+			date_stop = day + "/" + month + "/" + year;
+			range_dates.put("date_stop", date_stop);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return range_dates;
+	}
+
+	// Obtener el rango de fechas - Hoy
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getRangeDates_today() {
+		HashMap<String, Object> result = null;
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object registers_result = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRangeDates_today");
+			result = convertDatetoString((HashMap<String, Object>) registers_result);
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Obtener el rango de fechas - Ayer
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getRangeDates_yesterday() {
+		HashMap<String, Object> result = null;
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object registers_result = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRangeDates_yesterday");
+			result = convertDatetoString((HashMap<String, Object>) registers_result);
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Obtener el rango de fechas - Esta semana
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getRangeDates_this_week() {
+		HashMap<String, Object> result = null;
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object registers_result = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRangeDates_this_week");
+			result = convertDatetoString((HashMap<String, Object>) registers_result);
+		} catch (XMLRPCException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	// Obtener el rango de fechas - Esta semana
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getRangeDates_this_month() {
+		HashMap<String, Object> result = null;
+		try {
+			XMLRPCClient client = new XMLRPCClient(mUrl);
+			Object registers_result = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getRangeDates_this_month");
+			result = convertDatetoString((HashMap<String, Object>) registers_result);
 		} catch (XMLRPCException e) {
 			e.printStackTrace();
 		}
