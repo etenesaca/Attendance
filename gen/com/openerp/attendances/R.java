@@ -204,20 +204,21 @@ public final class R {
         public static final int contenedor_without_account=0x7f090024;
         public static final int imageView1=0x7f090000;
         public static final int imgAction=0x7f090020;
+        public static final int ivItem=0x7f09002f;
         public static final int lblErrorConenction=0x7f090023;
         public static final int lblWithout_account=0x7f090025;
         public static final int lstAttendances=0x7f09002c;
         public static final int lstExtraHours=0x7f09002e;
-        public static final int mnAcercade=0x7f090032;
-        public static final int mnExit=0x7f090033;
-        public static final int mnRefresh=0x7f09002f;
-        public static final int mnSearchRegisters=0x7f090030;
-        public static final int mnSearch_Exit=0x7f090038;
-        public static final int mnSearch_This_Month=0x7f090037;
-        public static final int mnSearch_This_Week=0x7f090036;
-        public static final int mnSearch_Today=0x7f090034;
-        public static final int mnSearch_Yesterday=0x7f090035;
-        public static final int mnSettings=0x7f090031;
+        public static final int mnAcercade=0x7f090034;
+        public static final int mnExit=0x7f090035;
+        public static final int mnRefresh=0x7f090031;
+        public static final int mnSearchRegisters=0x7f090032;
+        public static final int mnSearch_Exit=0x7f09003a;
+        public static final int mnSearch_This_Month=0x7f090039;
+        public static final int mnSearch_This_Week=0x7f090038;
+        public static final int mnSearch_Today=0x7f090036;
+        public static final int mnSearch_Yesterday=0x7f090037;
+        public static final int mnSettings=0x7f090033;
         public static final int pctFoto=0x7f09001d;
         public static final int tabAttendances=0x7f09002b;
         public static final int tabExtraHours=0x7f09002d;
@@ -240,6 +241,7 @@ public final class R {
         public static final int textView7=0x7f09001a;
         public static final int textView8=0x7f090018;
         public static final int textView9=0x7f090015;
+        public static final int tvTitle=0x7f090030;
         public static final int txtFrom=0x7f090027;
         public static final int txtName=0x7f09001c;
         public static final int txtPassword=0x7f09000a;
@@ -254,6 +256,7 @@ public final class R {
         public static final int activity_profile=0x7f030001;
         public static final int activity_register=0x7f030002;
         public static final int activity_search=0x7f030003;
+        public static final int list_item_attendance=0x7f030004;
     }
     public static final class menu {
         public static final int menu_register=0x7f080000;

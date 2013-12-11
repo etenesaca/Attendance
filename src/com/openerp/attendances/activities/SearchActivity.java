@@ -1,13 +1,16 @@
 package com.openerp.attendances.activities;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -15,13 +18,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.openerp.attendances.Configuration;
 import com.openerp.attendances.OpenErpConnect;
@@ -30,6 +35,7 @@ import com.openerp.attendances.R;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class SearchActivity extends Activity {
+	private ProgressDialog progressDialog;
 	private Configuration config;
 	private EditText txtFrom;
 	private EditText txtTo;
@@ -43,6 +49,9 @@ public class SearchActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// Display a indeterminate progress bar on title bar
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		setContentView(R.layout.activity_search);
 
 		// Inicializar las Pestañas
@@ -95,8 +104,12 @@ public class SearchActivity extends Activity {
 
 	@SuppressWarnings("unchecked")
 	void BuildSearchRegister() {
-		Toast msg = Toast.makeText(this, "Buscando..", Toast.LENGTH_SHORT);
-		msg.show();
+		// Sets the visibility of the indeterminate progress bar in the
+		// title
+		setProgressBarIndeterminateVisibility(true);
+		// Show progress dialog
+		progressDialog = ProgressDialog.show(this, "ProgressDialog", "Loading!");
+
 		// Mandar a buscar registros con un rango de fechas
 		String Server = config.getServer();
 		String database = config.getDataBase();
@@ -118,6 +131,8 @@ public class SearchActivity extends Activity {
 						Object[] attendances = (Object[]) registers_dict.get("attendance_registers");
 						String[] attandence_list = null;
 
+						List<Item> items = new ArrayList<Item>();
+
 						attandence_list = new String[attendances.length];
 						for (int i = 0; i < attendances.length; i++) {
 							HashMap<String, Object> item = (HashMap<String, Object>) attendances[i];
@@ -125,11 +140,22 @@ public class SearchActivity extends Activity {
 							String time = (String) item.get("time");
 							String duration = (String) item.get("duration");
 							String type = (String) item.get("type");
-							attandence_list[i] = date + " [" + time + "]" + " " + duration + " " + type;
+							String description = date + " [" + time + "]" + " " + duration + " " + type;
+
+							int icon = R.drawable.up;
+							if (type.equals("Salida")) {
+								icon = R.drawable.down;
+							}
+							items.add(new Item(icon, description));
 						}
 
-						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, attandence_list);
-						lstAttendances.setAdapter(adaptador);
+						// Sets the data behind this ListView
+						lstAttendances.setAdapter(new ItemAdapter(this, items));
+
+						// adaptador = new ArrayAdapter<String>(this,
+						// android.R.layout.simple_spinner_item,
+						// attandence_list);
+						// lstAttendances.setAdapter(adaptador);
 
 						// Procesar Horas Extras
 						Object[] extra_hours = (Object[]) registers_dict.get("extra_hours");
@@ -163,6 +189,8 @@ public class SearchActivity extends Activity {
 				}
 			}
 		}
+		setProgressBarIndeterminateVisibility(false);
+		progressDialog.dismiss();
 	}
 
 	@Override
