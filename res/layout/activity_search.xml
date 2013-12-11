@@ -39,21 +39,44 @@
             android:src="@drawable/search" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtTotalHours"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ContenedorTotals"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/contenedor_search"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/total_hours"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_gravity="center" >
+
+        <TextView
+            android:id="@+id/txtTotalHours"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/total_hours"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/txtTotalHours_Now"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cero"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/txtTotalHours_Week"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cero"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
     <TabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/txtTotalHours" >
+        android:layout_below="@id/ContenedorTotals" >
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -19,8 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,8 +27,11 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.openerp.attendances.Configuration;
+import com.openerp.attendances.Item;
+import com.openerp.attendances.ItemAdapter;
 import com.openerp.attendances.OpenErpConnect;
 import com.openerp.attendances.R;
+import com.openerp.attendances.hupernikao;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
@@ -40,6 +41,8 @@ public class SearchActivity extends Activity {
 	private EditText txtFrom;
 	private EditText txtTo;
 	private TextView txtTotalHours;
+	private TextView txtTotalHours_Now;
+	private TextView txtTotalHours_Week;
 	private ListView lstAttendances;
 	private ListView lstExtraHours;
 
@@ -82,6 +85,9 @@ public class SearchActivity extends Activity {
 		txtFrom = (EditText) findViewById(R.id.txtFrom);
 		txtTo = (EditText) findViewById(R.id.txtTo);
 		txtTotalHours = (TextView) findViewById(R.id.txtTotalHours);
+		txtTotalHours_Now = (TextView) findViewById(R.id.txtTotalHours_Now);
+		txtTotalHours_Week = (TextView) findViewById(R.id.txtTotalHours_Week);
+
 		lstAttendances = (ListView) findViewById(R.id.lstAttendances);
 		lstExtraHours = (ListView) findViewById(R.id.lstExtraHours);
 
@@ -129,11 +135,10 @@ public class SearchActivity extends Activity {
 
 						// Procesar los registros de asistencia
 						Object[] attendances = (Object[]) registers_dict.get("attendance_registers");
-						String[] attandence_list = null;
-
 						List<Item> items = new ArrayList<Item>();
 
-						attandence_list = new String[attendances.length];
+						String last_attendance = "";
+						String last_date = "";
 						for (int i = 0; i < attendances.length; i++) {
 							HashMap<String, Object> item = (HashMap<String, Object>) attendances[i];
 							String date = (String) item.get("date");
@@ -147,15 +152,36 @@ public class SearchActivity extends Activity {
 								icon = R.drawable.down;
 							}
 							items.add(new Item(icon, description));
+							last_attendance = type;
+							last_date = date + " " + time;
 						}
+
+						// Sacar el total de Horas
+						String total_hours = registers_dict.get("total_hours") + "";
+						txtTotalHours.setText("Total: " + total_hours);
+
+						if (last_attendance.equals("Entrada")) {
+							Calendar fecha = new GregorianCalendar();
+							int hour = fecha.get(Calendar.HOUR_OF_DAY);
+							int minute = fecha.get(Calendar.MINUTE);
+							int seconds = fecha.get(Calendar.SECOND);
+
+							int seconds_now = (hour * 3600) + (minute * 60) + seconds;
+
+							int seconds_check_in = hupernikao.ConvertStringtoDateSeconds(last_date);
+							String with_now = hupernikao.ConvertToHourFormat(seconds_now - seconds_check_in, true);
+							txtTotalHours_Now.setVisibility(View.VISIBLE);
+							txtTotalHours_Now.setText("00:00:00 " + with_now);
+						} else {
+							txtTotalHours_Now.setVisibility(View.INVISIBLE);
+							txtTotalHours_Now.setText("");
+						}
+
+						// Poner las horas restarntes en esta semana
+						txtTotalHours_Week.setText("05:53:12");
 
 						// Sets the data behind this ListView
 						lstAttendances.setAdapter(new ItemAdapter(this, items));
-
-						// adaptador = new ArrayAdapter<String>(this,
-						// android.R.layout.simple_spinner_item,
-						// attandence_list);
-						// lstAttendances.setAdapter(adaptador);
 
 						// Procesar Horas Extras
 						Object[] extra_hours = (Object[]) registers_dict.get("extra_hours");
@@ -175,10 +201,6 @@ public class SearchActivity extends Activity {
 							}
 							extra_hours_list[i] = date + " [" + type + hours + "]" + " " + description;
 						}
-
-						// Sacar el total de Horas
-						String total_hours = registers_dict.get("total_hours") + "";
-						txtTotalHours.setText("Total de horas: " + total_hours);
 
 						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, extra_hours_list);
 						lstExtraHours.setAdapter(adaptador);

@@ -3,6 +3,7 @@
 
     <string name="app_name">Attendances</string>
     <string name="total_hours">Total de Horas</string>
+    <string name="cero">00:00:00</string>
     <!-- Botones -->
     <string name="refresh">Volver a Cargar</string>
     <string name="save">Guardar</string>
