@@ -89,6 +89,10 @@ public class hupernikao {
 
 		int secs = (int) res_mins;
 
+		if (!with_seconds && secs > 30.0) {
+			mins++;
+		}
+
 		result = CompletarCadena(hours + "") + ":" + CompletarCadena(mins + "");
 		if (with_seconds) {
 			result = result + ":" + CompletarCadena(secs + "");

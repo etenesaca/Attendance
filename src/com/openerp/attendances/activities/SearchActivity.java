@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -45,6 +47,13 @@ public class SearchActivity extends Activity {
 	private TextView txtTotalHours_Week;
 	private ListView lstAttendances;
 	private ListView lstExtraHours;
+
+	Timer T;
+	int seconds_check_in;
+	float hours_by_week;
+	int total_seconds;
+	int total_seconds_in_this_week;
+	boolean sum_seconds = false;
 
 	TabHost contenedorPestania;
 	TabSpec pestania;
@@ -102,6 +111,39 @@ public class SearchActivity extends Activity {
 		txtTo.setText(Hoy);
 		// Consultar datos
 		BuildSearchRegister();
+
+		T = new Timer();
+		T.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if (sum_seconds) {
+							Calendar fecha = new GregorianCalendar();
+							int hour = fecha.get(Calendar.HOUR_OF_DAY);
+							int minute = fecha.get(Calendar.MINUTE);
+							int seconds = fecha.get(Calendar.SECOND);
+							int seconds_now = (hour * 3600) + (minute * 60) + seconds;
+							int transcurrido = seconds_now - seconds_check_in;
+							String with_now = hupernikao.ConvertToHourFormat(transcurrido, true);
+							txtTotalHours_Now.setText("00:00:00 " + with_now);
+
+							// Calcular las horas restantes en esta semana
+							int seconds_by_week = (int) (hours_by_week * 3600);
+							int faltantes = seconds_by_week - (transcurrido + total_seconds_in_this_week);
+							String faltasntes_str = hupernikao.ConvertToHourFormat(faltantes, true);
+							txtTotalHours_Week.setText("" + faltasntes_str);
+
+							// Sumar el total de horas mas ahora
+							int total_hours_with_now = (int) (total_seconds + transcurrido);
+							String total_hours_with_now_str = hupernikao.ConvertToHourFormat(total_hours_with_now, true);
+							txtTotalHours_Now.setText(total_hours_with_now_str + " " + with_now);
+						}
+					}
+				});
+			}
+		}, 1000, 1000);
 	}
 
 	public void SearchOnClick(View view) {
@@ -131,11 +173,10 @@ public class SearchActivity extends Activity {
 					OpenErpConnect conn = new OpenErpConnect(Server, port, database, user, pass, uid);
 					if (conn != null) {
 						HashMap<String, Object> registers_dict = conn.getRegisters(txtFrom.getText().toString(), txtTo.getText().toString(), Integer.parseInt(config.getEmployeeID()));
-						ArrayAdapter<String> adaptador;
 
 						// Procesar los registros de asistencia
 						Object[] attendances = (Object[]) registers_dict.get("attendance_registers");
-						List<Item> items = new ArrayList<Item>();
+						List<Item> items_attendances = new ArrayList<Item>();
 
 						String last_attendance = "";
 						String last_date = "";
@@ -151,60 +192,67 @@ public class SearchActivity extends Activity {
 							if (type.equals("Salida")) {
 								icon = R.drawable.down;
 							}
-							items.add(new Item(icon, description));
+							items_attendances.add(new Item(icon, description));
 							last_attendance = type;
 							last_date = date + " " + time;
 						}
+						// Poner la lista de elementos al ListView
+						lstAttendances.setAdapter(new ItemAdapter(this, items_attendances));
+
+						// Obtener las horas laborables por semana
+						String hours_by_week_str = registers_dict.get("hours_by_week") + "";
+						hours_by_week = Float.parseFloat(hours_by_week_str);
+
+						// Obtener el tiempo total en el rango de fechas
+						String total_seconds_str = registers_dict.get("total_seconds") + "";
+						total_seconds = Integer.parseInt(total_seconds_str);
+
+						// Obtener el tiempo total laborado por semana en segund
+						String total_seconds_in_this_week_str = registers_dict.get("total_seconds_in_this_week") + "";
+						total_seconds_in_this_week = Integer.parseInt(total_seconds_in_this_week_str);
 
 						// Sacar el total de Horas
-						String total_hours = registers_dict.get("total_hours") + "";
-						txtTotalHours.setText("Total: " + total_hours);
+						String total_hours_format_hour = registers_dict.get("total_hours_format_hour") + "";
+						txtTotalHours.setText("Completadas: " + total_hours_format_hour);
 
 						if (last_attendance.equals("Entrada")) {
-							Calendar fecha = new GregorianCalendar();
-							int hour = fecha.get(Calendar.HOUR_OF_DAY);
-							int minute = fecha.get(Calendar.MINUTE);
-							int seconds = fecha.get(Calendar.SECOND);
-
-							int seconds_now = (hour * 3600) + (minute * 60) + seconds;
-
-							int seconds_check_in = hupernikao.ConvertStringtoDateSeconds(last_date);
-							String with_now = hupernikao.ConvertToHourFormat(seconds_now - seconds_check_in, true);
+							seconds_check_in = hupernikao.ConvertStringtoDateSeconds(last_date);
 							txtTotalHours_Now.setVisibility(View.VISIBLE);
-							txtTotalHours_Now.setText("00:00:00 " + with_now);
+							sum_seconds = true;
 						} else {
 							txtTotalHours_Now.setVisibility(View.INVISIBLE);
 							txtTotalHours_Now.setText("");
+
+							// Poner la horas restantes por laborar esta semana
+							int seconds_by_week = (int) (hours_by_week * 3600);
+							int faltantes = seconds_by_week - total_seconds_in_this_week;
+							String faltasntes_str = hupernikao.ConvertToHourFormat(faltantes);
+							txtTotalHours_Week.setText("" + faltasntes_str);
+
+							sum_seconds = false;
 						}
-
-						// Poner las horas restarntes en esta semana
-						txtTotalHours_Week.setText("05:53:12");
-
-						// Sets the data behind this ListView
-						lstAttendances.setAdapter(new ItemAdapter(this, items));
 
 						// Procesar Horas Extras
 						Object[] extra_hours = (Object[]) registers_dict.get("extra_hours");
-						String[] extra_hours_list = null;
+						List<Item> items_extra_hours = new ArrayList<Item>();
 
-						extra_hours_list = new String[extra_hours.length];
 						for (int i = 0; i < extra_hours.length; i++) {
 							HashMap<String, Object> item = (HashMap<String, Object>) extra_hours[i];
 							String date = (String) item.get("date");
 							String hours = (String) item.get("hours");
-							String description = (String) item.get("description");
+							String motive = (String) item.get("description");
 							String type = (String) item.get("type");
+
+							int icon = R.drawable.remove;
 							if (type.equals("add")) {
-								type = "+";
-							} else {
-								type = "-";
+								icon = R.drawable.add;
 							}
-							extra_hours_list[i] = date + " [" + type + hours + "]" + " " + description;
+
+							String description = date + " [" + hours + "]" + " " + motive;
+							items_extra_hours.add(new Item(icon, description));
 						}
-
-						adaptador = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, extra_hours_list);
-						lstExtraHours.setAdapter(adaptador);
-
+						// Poner la lista de elementos al ListView
+						lstExtraHours.setAdapter(new ItemAdapter(this, items_extra_hours));
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
