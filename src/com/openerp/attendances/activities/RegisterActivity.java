@@ -1,6 +1,7 @@
 package com.openerp.attendances.activities;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -37,6 +38,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
 	private Button btnRefresh;
 	private Button btnRegisterAttendance;
 	private TextView txtNombre;
+	private TextView txtLastRegister;
+	private String RegisterType;
 
 	@Override
 	protected void onStart() {
@@ -74,6 +77,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		btnRegisterAttendance.setOnClickListener(this);
 
 		txtNombre = (TextView) findViewById(R.id.txtName);
+		txtLastRegister = (TextView) findViewById(R.id.txtLastRegister);
 		imgAction = (ImageView) findViewById(R.id.imgAction);
 
 		contenedor_menu = (LinearLayout) findViewById(R.id.contenedor_menu);
@@ -138,12 +142,28 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							Toast msg = Toast.makeText(this, "Hoy no es un día laborable", Toast.LENGTH_LONG);
 							msg.show();
 						} else {
+							HashMap<String, Object> last_register = conn.getLastRegisterToday();
+							if (Boolean.parseBoolean(last_register.get("has_register_today") + "")) {
+								txtLastRegister.setVisibility(View.VISIBLE);
+								if (last_register.get("type").equals("in")) {
+									txtLastRegister.setText("Entrada: " + last_register.get("time"));
+									txtLastRegister.setTextColor(getResources().getColor(R.color.green));
+								} else {
+									txtLastRegister.setText("Salida: " + last_register.get("time"));
+									txtLastRegister.setTextColor(getResources().getColor(R.color.red));
+								}
+							} else {
+								txtLastRegister.setVisibility(View.INVISIBLE);
+							}
+
 							String[] parts = ValidateRegister.split("_");
 							if (parts[0].equals("in")) {
+								RegisterType = "in";
 								btnRegisterAttendance.setText("Registrar Entrada");
 								btnRegisterAttendance.setEnabled(true);
 								imgAction.setImageDrawable(getResources().getDrawable(R.drawable.up));
 							} else if (parts[0].equals("out")) {
+								RegisterType = "out";
 								btnRegisterAttendance.setText("Registrar Salida");
 								btnRegisterAttendance.setEnabled(true);
 								imgAction.setImageDrawable(getResources().getDrawable(R.drawable.down));
@@ -189,15 +209,30 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				try {
 					conn = new OpenErpConnect(Server, port, database, user, pass, uid);
 					if (conn != null) {
+						AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
+						dlgAlert.setPositiveButton("OK", null);
+						dlgAlert.setCancelable(true);
+						dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
+
+						HashMap<String, Object> last_register = conn.getLastRegisterToday();
+						if (Boolean.parseBoolean(last_register.get("has_register_today") + "")) {
+							if (RegisterType.equals("in") && last_register.get("type").equals("in")) {
+								dlgAlert.setMessage("¡Ya se registro la Entrada a las: " + last_register.get("time") + " !");
+								dlgAlert.create().show();
+								refresh_connection();
+								return;
+							} else if (RegisterType.equals("out") && last_register.get("type").equals("out")) {
+								dlgAlert.setMessage("¡Ya se registro la Salida a las: " + last_register.get("time") + " !");
+								dlgAlert.create().show();
+								refresh_connection();
+								return;
+							}
+						}
 						boolean result = conn.Register_Attendance(employeeID);
 						if (result) {
 							Toast msg = Toast.makeText(this, "Registro Guardado Correctamente", Toast.LENGTH_SHORT);
 							msg.show();
 						} else {
-							AlertDialog.Builder dlgAlert = new AlertDialog.Builder(this);
-							dlgAlert.setTitle("Erro").setIcon(android.R.drawable.ic_delete);
-							dlgAlert.setPositiveButton("OK", null);
-							dlgAlert.setCancelable(true);
 							dlgAlert.setMessage("Upps.. Algo a salido mal y no se pudo guardar el registro");
 							dlgAlert.create().show();
 						}
