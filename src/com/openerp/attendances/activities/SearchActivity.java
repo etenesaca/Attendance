@@ -21,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -132,8 +131,11 @@ public class SearchActivity extends Activity {
 							// Calcular las horas restantes en esta semana
 							int seconds_by_week = (int) (hours_by_week * 3600);
 							int faltantes = seconds_by_week - (transcurrido + total_seconds_in_this_week);
-							String faltasntes_str = hupernikao.ConvertToHourFormat(faltantes, true);
-							txtTotalHours_Week.setText("" + faltasntes_str);
+							String faltantes_str = "00.00:00";
+							if (faltantes > 0) {
+								faltantes_str = hupernikao.ConvertToHourFormat(faltantes, true);
+							}
+							txtTotalHours_Week.setText("" + faltantes_str);
 
 							// Sumar el total de horas mas ahora
 							int total_hours_with_now = (int) (total_seconds + transcurrido);
@@ -226,8 +228,11 @@ public class SearchActivity extends Activity {
 							// Poner la horas restantes por laborar esta semana
 							int seconds_by_week = (int) (hours_by_week * 3600);
 							int faltantes = seconds_by_week - total_seconds_in_this_week;
-							String faltasntes_str = hupernikao.ConvertToHourFormat(faltantes);
-							txtTotalHours_Week.setText("" + faltasntes_str);
+							String faltantes_str = "00.00:00";
+							if (faltantes > 0) {
+								faltantes_str = hupernikao.ConvertToHourFormat(faltantes);
+							}
+							txtTotalHours_Week.setText("" + faltantes_str);
 
 							sum_seconds = false;
 						}
