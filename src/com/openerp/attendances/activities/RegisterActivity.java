@@ -104,7 +104,6 @@ public class RegisterActivity extends Activity implements OnClickListener {
 		String database = config.getDataBase();
 		String user = config.getLogin();
 		String pass = config.getPassword();
-
 		if (Server != null && config.getPort() != null && config.getDataBase() != null && config.getUserID() != null) {
 			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
 				imgAction.setImageDrawable(getResources().getDrawable(R.drawable.stop));
@@ -119,6 +118,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				// Verificar si debe registrar una entrada o una salida
 				Integer port = Integer.parseInt(config.getPort());
 				Integer uid = Integer.parseInt(config.getUserID());
+				Integer employeeID = Integer.parseInt(config.getEmployeeID());
 				try {
 					OpenErpConnect conn = new OpenErpConnect(Server, port, database, user, pass, uid);
 					if (conn != null) {
@@ -142,7 +142,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							Toast msg = Toast.makeText(this, "Hoy no es un día laborable", Toast.LENGTH_LONG);
 							msg.show();
 						} else {
-							HashMap<String, Object> last_register = conn.getLastRegisterToday();
+							HashMap<String, Object> last_register = conn.getLastRegisterToday(employeeID);
 							if (Boolean.parseBoolean(last_register.get("has_register_today") + "")) {
 								txtLastRegister.setVisibility(View.VISIBLE);
 								if (last_register.get("type").equals("in")) {
@@ -214,7 +214,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 						dlgAlert.setCancelable(true);
 						dlgAlert.setTitle("Error").setIcon(android.R.drawable.ic_delete);
 
-						HashMap<String, Object> last_register = conn.getLastRegisterToday();
+						HashMap<String, Object> last_register = conn.getLastRegisterToday(employeeID);
 						if (Boolean.parseBoolean(last_register.get("has_register_today") + "")) {
 							if (RegisterType.equals("in") && last_register.get("type").equals("in")) {
 								dlgAlert.setMessage("¡Ya se registro la Entrada a las: " + last_register.get("time") + " !");

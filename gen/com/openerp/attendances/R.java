@@ -191,6 +191,7 @@ public final class R {
         public static final int search=0x7f020009;
         public static final int stop=0x7f02000a;
         public static final int up=0x7f02000b;
+        public static final int user_male=0x7f02000c;
     }
     public static final class id {
         public static final int ContenedorTotals=0x7f09002b;
@@ -288,7 +289,7 @@ public final class R {
         public static final int database=0x7f05000a;
         /**  Messages 
          */
-        public static final int error_connection=0x7f050019;
+        public static final int error_connection=0x7f05001a;
         public static final int last_registers=0x7f050003;
         public static final int password=0x7f05000c;
         public static final int port=0x7f050009;
@@ -297,24 +298,25 @@ public final class R {
         public static final int refresh=0x7f050004;
         public static final int register_attendance=0x7f050007;
         public static final int save=0x7f050005;
-        public static final int search=0x7f05001f;
+        public static final int search=0x7f050020;
         /**  Settings 
          */
         public static final int server=0x7f050008;
-        public static final int this_month=0x7f05001e;
-        public static final int this_week=0x7f05001d;
+        public static final int this_month=0x7f05001f;
+        public static final int this_week=0x7f05001e;
         public static final int title_config=0x7f050017;
         public static final int title_register=0x7f050018;
         /**  Layouts Titles 
          */
         public static final int title_search=0x7f050016;
-        public static final int today=0x7f05001c;
+        public static final int title_user_profile=0x7f050019;
+        public static final int today=0x7f05001d;
         public static final int total_hours=0x7f050001;
         public static final int username=0x7f05000b;
-        public static final int without_account=0x7f05001a;
+        public static final int without_account=0x7f05001b;
         /**  Search 
          */
-        public static final int yesterday=0x7f05001b;
+        public static final int yesterday=0x7f05001c;
     }
     public static final class style {
         /** 

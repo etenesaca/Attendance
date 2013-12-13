@@ -580,11 +580,11 @@ public class OpenErpConnect {
 
 	// Obtener el rango de fechas - Esta semana
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> getLastRegisterToday() {
+	public HashMap<String, Object> getLastRegisterToday(int employeeID) {
 		HashMap<String, Object> result = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
-			Object last_register = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getLastRegisterToday");
+			Object last_register = (Object) client.call("execute", mDatabase, getUserId(), mPassword, "control.horario.register", "getLastRegisterToday", employeeID);
 			result = (HashMap<String, Object>) last_register;
 		} catch (XMLRPCException e) {
 			e.printStackTrace();

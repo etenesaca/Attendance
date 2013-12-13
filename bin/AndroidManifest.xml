@@ -42,8 +42,8 @@
         <!-- Perfil de Usuario -->
         <activity
             android:name="com.openerp.attendances.activities.ProfileActivity"
-            android:icon="@drawable/configurations"
-            android:label="@string/title_config" >
+            android:icon="@drawable/user_male"
+            android:label="@string/title_user_profile" >
             <intent-filter>
                 <action android:name="com.openerp.attendances.Profile_Activity" />
 

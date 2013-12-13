@@ -35,6 +35,7 @@
     <string name="title_search">Registros de Asistencia</string>
     <string name="title_config">Configuraciones</string>
     <string name="title_register">Registrar asistencia</string>
+    <string name="title_user_profile">Perfíl de Usuario</string>
 
     <!-- Messages -->
     <string name="error_connection">Error de Conexión</string>
