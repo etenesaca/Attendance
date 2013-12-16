@@ -112,6 +112,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 				btnRegisterAttendance.setText("Registrar Asistencia");
 
 				contenedor_menu.setVisibility(View.VISIBLE);
+				txtLastRegister.setVisibility(View.INVISIBLE);
 				contenedor_error_connection.setVisibility(View.INVISIBLE);
 				contenedor_without_account.setVisibility(View.INVISIBLE);
 				contenedor_register.setVisibility(View.VISIBLE);
@@ -135,13 +136,12 @@ public class RegisterActivity extends Activity implements OnClickListener {
 							return;
 						}
 						if (ValidateRegister.equals("no_config")) {
-							dlgAlert.setMessage("Eñ sistema no tiene configurados los dias laborables.");
+							dlgAlert.setMessage("El sistema no tiene configurados los dias laborables.");
 							dlgAlert.create().show();
 							return;
 						}
 						if (ValidateRegister.equals("no_day")) {
-							Toast msg = Toast.makeText(this, "Hoy no es un día laborable", Toast.LENGTH_LONG);
-							msg.show();
+							Toast.makeText(this, "Hoy no es un día laborable", Toast.LENGTH_LONG).show();
 						} else {
 							HashMap<String, Object> last_register = conn.getLastRegisterToday(employeeID);
 							if (Boolean.parseBoolean(last_register.get("has_register_today") + "")) {
