@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -288,6 +289,18 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			startActivity(config_act);
 			break;
 
+		case R.id.mnSettings2:
+			// Para ir a la ventana se Configuraciones
+			Intent config_act2 = new Intent(RegisterActivity.this, ConfigActivity.class);
+			startActivity(config_act2);
+			break;
+
+		case R.id.mnprofile:
+			// Ir al perfil del Usuario
+			Intent profile_act = new Intent(this, ProfileActivity.class);
+			startActivity(profile_act);
+			break;
+
 		case R.id.mnExit:
 			// Para cerrara la aplicacion
 			finish();
@@ -297,5 +310,21 @@ public class RegisterActivity extends Activity implements OnClickListener {
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onSearchRequested() {
+		// Para ir a la ventana se Configuraciones
+		Intent search_act = new Intent(RegisterActivity.this, SearchActivity.class);
+		startActivity(search_act);
+		return super.onSearchRequested();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0) {
+
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }

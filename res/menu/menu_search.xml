@@ -2,24 +2,44 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/mnSearch_Today"
+        android:id="@+id/mnSearch_Today2"
         android:numericShortcut="3"
         android:title="@string/action_search_today"/>
     <item
-        android:id="@+id/mnSearch_Yesterday"
+        android:id="@+id/mnSearch_Yesterday2"
         android:numericShortcut="3"
         android:title="@string/action_search_yesterday"/>
     <item
-        android:id="@+id/mnSearch_This_Week"
+        android:id="@+id/mnSearch_This_Week2"
         android:numericShortcut="1"
         android:title="@string/action_search_this_week"/>
     <item
-        android:id="@+id/mnSearch_This_Month"
+        android:id="@+id/mnSearch_This_Month2"
         android:numericShortcut="2"
         android:title="@string/action_search_this_month"/>
     <item
-        android:id="@+id/mnSearch_Exit"
-        android:numericShortcut="3"
-        android:title="@string/action_exit"/>
+        android:id="@+id/submenu_search"
+        android:icon="@drawable/ic_action_overflow"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/options">
+        <menu>
+            <item
+                android:id="@+id/mnSearch_Today"
+                android:numericShortcut="3"
+                android:title="@string/action_search_today"/>
+            <item
+                android:id="@+id/mnSearch_Yesterday"
+                android:numericShortcut="3"
+                android:title="@string/action_search_yesterday"/>
+            <item
+                android:id="@+id/mnSearch_This_Week"
+                android:numericShortcut="1"
+                android:title="@string/action_search_this_week"/>
+            <item
+                android:id="@+id/mnSearch_This_Month"
+                android:numericShortcut="2"
+                android:title="@string/action_search_this_month"/>
+        </menu>
+    </item>
 
 </menu>

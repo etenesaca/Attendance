@@ -2,24 +2,47 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/mnRefresh"
-        android:numericShortcut="3"
-        android:title="@string/action_refresh"/>
-    <item
-        android:id="@+id/mnSearchRegisters"
-        android:numericShortcut="3"
-        android:title="@string/action_search_register"/>
-    <item
-        android:id="@+id/mnSettings"
+        android:id="@+id/mnSettings2"
+        android:icon="@drawable/ic_action_settings"
         android:numericShortcut="1"
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/mnAcercade"
+        android:icon="@drawable/ic_action_help"
         android:numericShortcut="2"
         android:title="@string/action_acercade"/>
     <item
         android:id="@+id/mnExit"
         android:numericShortcut="3"
         android:title="@string/action_exit"/>
+    
+    <item
+        android:id="@+id/mnSearchRegisters"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/action_search_register"/>
+    <item
+        android:id="@+id/submenu"
+        android:icon="@drawable/ic_action_overflow"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/options">
+        <menu>
+            <item
+                android:id="@+id/mnRefresh"
+                android:icon="@drawable/ic_action_refresh"
+                android:numericShortcut="3"
+                android:title="@string/action_refresh"/>
+            <item
+                android:id="@+id/mnSettings"
+                android:icon="@drawable/ic_action_settings"
+                android:numericShortcut="1"
+                android:title="@string/action_settings"/>
+            <item
+                android:id="@+id/mnprofile"
+                android:icon="@drawable/ic_action_person"
+                android:numericShortcut="2"
+                android:title="@string/action_search_profile"/>
+        </menu>
+    </item>
 
 </menu>

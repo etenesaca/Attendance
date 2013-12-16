@@ -181,17 +181,28 @@ public final class R {
     public static final class drawable {
         public static final int add=0x7f020000;
         public static final int backgroun_user=0x7f020001;
-        public static final int configurations=0x7f020002;
-        public static final int connected=0x7f020003;
-        public static final int down=0x7f020004;
-        public static final int find=0x7f020005;
-        public static final int friends=0x7f020006;
-        public static final int ic_launcher=0x7f020007;
-        public static final int remove=0x7f020008;
-        public static final int search=0x7f020009;
-        public static final int stop=0x7f02000a;
-        public static final int up=0x7f02000b;
-        public static final int user_male=0x7f02000c;
+        public static final int bg1=0x7f020002;
+        public static final int bg2=0x7f020003;
+        public static final int bg3=0x7f020004;
+        public static final int configurations=0x7f020005;
+        public static final int connected=0x7f020006;
+        public static final int down=0x7f020007;
+        public static final int find=0x7f020008;
+        public static final int friends=0x7f020009;
+        public static final int ic_action_back=0x7f02000a;
+        public static final int ic_action_help=0x7f02000b;
+        public static final int ic_action_overflow=0x7f02000c;
+        public static final int ic_action_person=0x7f02000d;
+        public static final int ic_action_refresh=0x7f02000e;
+        public static final int ic_action_replay=0x7f02000f;
+        public static final int ic_action_search=0x7f020010;
+        public static final int ic_action_settings=0x7f020011;
+        public static final int ic_launcher=0x7f020012;
+        public static final int remove=0x7f020013;
+        public static final int search=0x7f020014;
+        public static final int stop=0x7f020015;
+        public static final int up=0x7f020016;
+        public static final int user_male=0x7f020017;
     }
     public static final class id {
         public static final int ContenedorTotals=0x7f09002b;
@@ -213,17 +224,25 @@ public final class R {
         public static final int lblWithout_account=0x7f090026;
         public static final int lstAttendances=0x7f090030;
         public static final int lstExtraHours=0x7f090032;
-        public static final int mnAcercade=0x7f090038;
-        public static final int mnExit=0x7f090039;
-        public static final int mnRefresh=0x7f090035;
-        public static final int mnSearchRegisters=0x7f090036;
-        public static final int mnSearch_Exit=0x7f09003e;
-        public static final int mnSearch_This_Month=0x7f09003d;
-        public static final int mnSearch_This_Week=0x7f09003c;
-        public static final int mnSearch_Today=0x7f09003a;
-        public static final int mnSearch_Yesterday=0x7f09003b;
-        public static final int mnSettings=0x7f090037;
+        public static final int mnAcercade=0x7f090037;
+        public static final int mnExit=0x7f090038;
+        public static final int mnProfile_refresh=0x7f090035;
+        public static final int mnRefresh=0x7f09003b;
+        public static final int mnSearchRegisters=0x7f090039;
+        public static final int mnSearch_This_Month=0x7f090046;
+        public static final int mnSearch_This_Month2=0x7f090041;
+        public static final int mnSearch_This_Week=0x7f090045;
+        public static final int mnSearch_This_Week2=0x7f090040;
+        public static final int mnSearch_Today=0x7f090043;
+        public static final int mnSearch_Today2=0x7f09003e;
+        public static final int mnSearch_Yesterday=0x7f090044;
+        public static final int mnSearch_Yesterday2=0x7f09003f;
+        public static final int mnSettings=0x7f09003c;
+        public static final int mnSettings2=0x7f090036;
+        public static final int mnprofile=0x7f09003d;
         public static final int pctFoto=0x7f09001d;
+        public static final int submenu=0x7f09003a;
+        public static final int submenu_search=0x7f090042;
         public static final int tabAttendances=0x7f09002f;
         public static final int tabExtraHours=0x7f090031;
         public static final int textView1=0x7f090001;
@@ -266,57 +285,64 @@ public final class R {
         public static final int list_item_attendance=0x7f030004;
     }
     public static final class menu {
-        public static final int menu_register=0x7f080000;
-        public static final int menu_search=0x7f080001;
+        public static final int menu_profile=0x7f080000;
+        public static final int menu_register=0x7f080001;
+        public static final int menu_search=0x7f080002;
     }
     public static final class string {
-        public static final int action_acercade=0x7f050010;
-        public static final int action_exit=0x7f05000f;
+        public static final int action_acercade=0x7f050013;
+        /**  Menu Perfil 
+         */
+        public static final int action_back=0x7f05000e;
+        public static final int action_exit=0x7f050012;
         /**  Menu Register 
          */
-        public static final int action_refresh=0x7f05000d;
-        public static final int action_search_register=0x7f050011;
-        public static final int action_search_this_month=0x7f050015;
-        public static final int action_search_this_week=0x7f050014;
-        public static final int action_search_today=0x7f050013;
+        public static final int action_refresh=0x7f050010;
+        public static final int action_refresh_profile=0x7f05000f;
+        public static final int action_search_profile=0x7f050015;
+        public static final int action_search_register=0x7f050014;
+        public static final int action_search_this_month=0x7f050019;
+        public static final int action_search_this_week=0x7f050018;
+        public static final int action_search_today=0x7f050017;
         /**  Menu Search 
          */
-        public static final int action_search_yesterday=0x7f050012;
-        public static final int action_settings=0x7f05000e;
+        public static final int action_search_yesterday=0x7f050016;
+        public static final int action_settings=0x7f050011;
         public static final int app_name=0x7f050000;
-        public static final int cancel=0x7f050006;
+        public static final int cancel=0x7f050007;
         public static final int cero=0x7f050002;
-        public static final int database=0x7f05000a;
+        public static final int database=0x7f05000b;
         /**  Messages 
          */
-        public static final int error_connection=0x7f05001a;
+        public static final int error_connection=0x7f05001e;
         public static final int last_registers=0x7f050003;
-        public static final int password=0x7f05000c;
-        public static final int port=0x7f050009;
+        public static final int options=0x7f050004;
+        public static final int password=0x7f05000d;
+        public static final int port=0x7f05000a;
         /**  Botones 
          */
-        public static final int refresh=0x7f050004;
-        public static final int register_attendance=0x7f050007;
-        public static final int save=0x7f050005;
-        public static final int search=0x7f050020;
+        public static final int refresh=0x7f050005;
+        public static final int register_attendance=0x7f050008;
+        public static final int save=0x7f050006;
+        public static final int search=0x7f050024;
         /**  Settings 
          */
-        public static final int server=0x7f050008;
-        public static final int this_month=0x7f05001f;
-        public static final int this_week=0x7f05001e;
-        public static final int title_config=0x7f050017;
-        public static final int title_register=0x7f050018;
+        public static final int server=0x7f050009;
+        public static final int this_month=0x7f050023;
+        public static final int this_week=0x7f050022;
+        public static final int title_config=0x7f05001b;
+        public static final int title_register=0x7f05001c;
         /**  Layouts Titles 
          */
-        public static final int title_search=0x7f050016;
-        public static final int title_user_profile=0x7f050019;
-        public static final int today=0x7f05001d;
+        public static final int title_search=0x7f05001a;
+        public static final int title_user_profile=0x7f05001d;
+        public static final int today=0x7f050021;
         public static final int total_hours=0x7f050001;
-        public static final int username=0x7f05000b;
-        public static final int without_account=0x7f05001b;
+        public static final int username=0x7f05000c;
+        public static final int without_account=0x7f05001f;
         /**  Search 
          */
-        public static final int yesterday=0x7f05001c;
+        public static final int yesterday=0x7f050020;
     }
     public static final class style {
         /** 

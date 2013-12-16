@@ -5,12 +5,14 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,6 +50,10 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 		// servidor de OpenERP en el Hilo Principal
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
+
+		// Activar el Boton Home
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		// Crear una instancia de la Clase de Configuraciones
 		config = new Configuration(this);
@@ -265,5 +271,18 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 			break;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// Para cerrara las ventana se busquedas
+			finish();
+			break;
+		default:
+			break;
+		}
+		return true;
 	}
 }

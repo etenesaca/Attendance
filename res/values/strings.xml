@@ -5,6 +5,7 @@
     <string name="total_hours">Total de Horas</string>
     <string name="cero">00:00:00</string>
     <string name="last_registers">Entrada: 00:00:00</string>
+    <string name="options">Opciones</string>
     <!-- Botones -->
     <string name="refresh">Volver a Cargar</string>
     <string name="save">Guardar</string>
@@ -18,12 +19,17 @@
     <string name="username">Nombre de Usuario</string>
     <string name="password">Password</string>
 
+    <!-- Menu Perfil -->
+    <string name="action_back">Volver</string>
+    <string name="action_refresh_profile">Actualizar Datos</string>
+
     <!-- Menu Register -->
     <string name="action_refresh">Actualizar</string>
     <string name="action_settings">Configuraciones</string>
     <string name="action_exit">Salir</string>
     <string name="action_acercade">Acerca de</string>
     <string name="action_search_register">Consultas</string>
+    <string name="action_search_profile">Mi perfil</string>
 
     <!-- Menu Search -->
     <string name="action_search_yesterday">Ayer</string>

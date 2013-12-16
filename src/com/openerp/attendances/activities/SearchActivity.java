@@ -11,6 +11,7 @@ import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Build;
@@ -65,6 +66,15 @@ public class SearchActivity extends Activity {
 
 		setContentView(R.layout.activity_search);
 
+		// Lineas para habilitar el acceso a la red y poder conectarse al
+		// servidor de OpenERP en el Hilo Principal
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
+		// Activar el Boton Home
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
 		// Inicializar las Pestañas
 		contenedorPestania = (TabHost) findViewById(android.R.id.tabhost);
 		contenedorPestania.setup();
@@ -80,11 +90,6 @@ public class SearchActivity extends Activity {
 		contenedorPestania.addTab(pestania);
 
 		contenedorPestania.setCurrentTab(0);
-
-		// Lineas para habilitar el acceso a la red y poder conectarse al
-		// servidor de OpenERP en el Hilo Principal
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		StrictMode.setThreadPolicy(policy);
 
 		// Crear una instancia de la Clase de Configuraciones
 		config = new Configuration(this);
@@ -283,8 +288,7 @@ public class SearchActivity extends Activity {
 		String user = config.getLogin();
 		String pass = config.getPassword();
 
-		switch (item.getItemId()) {
-		case R.id.mnSearch_Today:
+		if (item.getItemId() == R.id.mnSearch_Today || item.getItemId() == R.id.mnSearch_Today2) {
 			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
 				Integer port = Integer.parseInt(config.getPort());
 				Integer uid = Integer.parseInt(config.getUserID());
@@ -301,9 +305,7 @@ public class SearchActivity extends Activity {
 				}
 				BuildSearchRegister();
 			}
-			break;
-
-		case R.id.mnSearch_Yesterday:
+		} else if (item.getItemId() == R.id.mnSearch_Yesterday || item.getItemId() == R.id.mnSearch_Yesterday2) {
 			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
 				Integer port = Integer.parseInt(config.getPort());
 				Integer uid = Integer.parseInt(config.getUserID());
@@ -320,9 +322,7 @@ public class SearchActivity extends Activity {
 				}
 				BuildSearchRegister();
 			}
-			break;
-
-		case R.id.mnSearch_This_Week:
+		} else if (item.getItemId() == R.id.mnSearch_This_Week || item.getItemId() == R.id.mnSearch_This_Week2) {
 			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
 				Integer port = Integer.parseInt(config.getPort());
 				Integer uid = Integer.parseInt(config.getUserID());
@@ -339,9 +339,7 @@ public class SearchActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
-			break;
-
-		case R.id.mnSearch_This_Month:
+		} else if (item.getItemId() == R.id.mnSearch_This_Month || item.getItemId() == R.id.mnSearch_This_Month2) {
 			if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
 				Integer port = Integer.parseInt(config.getPort());
 				Integer uid = Integer.parseInt(config.getUserID());
@@ -358,16 +356,11 @@ public class SearchActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
-			break;
-
-		case R.id.mnSearch_Exit:
-			// Para cerrara las ventana se busquedas
+		} else if (item.getItemId() == android.R.id.home) {
+			// Reggresar al activity de registro de asistencias
 			finish();
-			break;
-
-		default:
-			break;
 		}
+
 		return true;
 	}
 }
