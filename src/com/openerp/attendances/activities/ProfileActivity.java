@@ -1,16 +1,21 @@
 package com.openerp.attendances.activities;
 
-import java.net.MalformedURLException;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.openerp.attendances.Configuration;
 import com.openerp.attendances.OpenErpConnect;
@@ -19,6 +24,10 @@ import com.openerp.attendances.R;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class ProfileActivity extends Activity {
+
+	private TextView txtName;
+	private TextView txtCI;
+	private ImageView imgPhoto;
 	private Configuration config;
 
 	@Override
@@ -30,8 +39,36 @@ public class ProfileActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		// Lineas para habilitar el acceso a la red y poder conectarse al
+		// servidor de OpenERP en el Hilo Principal
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
 		// Crear una instancia de la Clase de Configuraciones
 		config = new Configuration(this);
+
+		txtName = (TextView) findViewById(R.id.txtName);
+		txtCI = (TextView) findViewById(R.id.txtCI);
+		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
+	}
+
+	void show_employee_info() {
+		// Cargar el Nombre de Usuario
+		txtCI.setText(config.getCI());
+		txtName.setText(config.getName());
+
+		if (config.getPhoto() != null) {
+			// Cargar la Foto
+			byte[] photo = Base64.decode(config.getPhoto(), Base64.DEFAULT);
+			Bitmap bmp = BitmapFactory.decodeByteArray(photo, 0, photo.length);
+			imgPhoto.setImageBitmap(bmp);
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		show_employee_info();
+		super.onStart();
 	}
 
 	@Override
@@ -56,14 +93,13 @@ public class ProfileActivity extends Activity {
 				// Verificar si hay conexion
 				if (OpenErpConnect.TestConnection(config.getServer(), Integer.parseInt(config.getPort()))) {
 					Integer port = Integer.parseInt(config.getPort());
-					Integer uid = Integer.parseInt(config.getUserID());
-					try {
-						OpenErpConnect conn = new OpenErpConnect(Server, port, database, user, pass, uid);
-						if (conn != null) {
-
+					OpenErpConnect oerp = OpenErpConnect.connect(Server, port, database, user, pass);
+					if (oerp != null) {
+						ConfigActivity ConfigActivity_obj = new ConfigActivity();
+						if (ConfigActivity_obj.save_employee_info(config, config.getEmployeeID(), oerp)) {
+							Toast.makeText(this, "Datos Actualizados correctamente.", Toast.LENGTH_SHORT).show();
+							show_employee_info();
 						}
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
 					}
 				}
 			}

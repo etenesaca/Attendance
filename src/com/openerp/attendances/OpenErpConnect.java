@@ -44,19 +44,52 @@ public class OpenErpConnect {
 
 	protected static final String CONNECTOR_NAME = "OpenErpConnect";
 
-	/**
-	 * @return the mUserId
-	 */
 	public Integer getUserId() {
 		return mUserId;
 	}
 
-	/**
-	 * @param mUserId
-	 *            the mUserId to set
-	 */
 	public void setUserId(Integer mUserId) {
 		this.mUserId = mUserId;
+	}
+
+	public String getServer() {
+		return mServer;
+	}
+
+	public void setServer(String mServer) {
+		this.mServer = mServer;
+	}
+
+	public Integer getPort() {
+		return mPort;
+	}
+
+	public void setPort(Integer mPort) {
+		this.mPort = mPort;
+	}
+
+	public String getDatabase() {
+		return mDatabase;
+	}
+
+	public void setDatabase(String mDatabase) {
+		this.mDatabase = mDatabase;
+	}
+
+	public String getUserName() {
+		return mUserName;
+	}
+
+	public void setUserName(String mUserName) {
+		this.mUserName = mUserName;
+	}
+
+	public String getPassword() {
+		return mPassword;
+	}
+
+	public void setPassword(String mPassword) {
+		this.mPassword = mPassword;
 	}
 
 	/** You should not use the constructor directly, use connect() instead */

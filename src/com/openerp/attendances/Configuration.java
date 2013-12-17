@@ -15,6 +15,7 @@ public class Configuration {
 	private final String KEY_PASSWORD = "pass";
 	private final String KEY_PHOTO = "photo";
 	private final String KEY_USERID = "userid";
+	private final String KEY_CI = "ci";
 	private final String KEY_EMPLOYEEID = "employeeid";
 
 	// Datos del Perfil
@@ -146,6 +147,19 @@ public class Configuration {
 	public void setEmployeeID(String EmployeeID) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_EMPLOYEEID, EmployeeID);
+		editor.commit();
+	}
+
+	/*
+	 * EMPLOYEEID
+	 */
+	public String getCI() {
+		return getSettings().getString(KEY_CI, null);
+	}
+
+	public void setCI(String CI) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_CI, CI);
 		editor.commit();
 	}
 }

@@ -106,6 +106,60 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 		}
 	}
 
+	public boolean save_employee_info(Configuration config, String employee_id, OpenErpConnect oerp_connection) {
+		long ln_employee_id = Long.parseLong(employee_id + "");
+		return save_employee_info(config, ln_employee_id, oerp_connection);
+	}
+
+	public boolean save_employee_info(Configuration config, Long[] employee_ids, OpenErpConnect oerp_connection) {
+		long employee_id = employee_ids[0];
+		return save_employee_info(config, employee_id, oerp_connection);
+	}
+
+	public boolean save_employee_info(Configuration config, long employee_id, OpenErpConnect oerp_connection) {
+		// Leer los datos del empleado
+		String[] fields_employee = { "user_id", "personal_id" };
+		Long[] employee_ids = { employee_id };
+		List<HashMap<String, Object>> employees = oerp_connection.read("control.horario.employee", employee_ids, fields_employee);
+		HashMap<String, Object> employee = employees.get(0);
+
+		// Leer los datos del perfil del Usuario
+		Object[] user_tuple = (Object[]) employee.get("user_id");
+		Long[] user_ids = { Long.parseLong(user_tuple[0] + "") };
+		String[] fields = { "image" };
+		List<HashMap<String, Object>> Users = oerp_connection.read("res.users", user_ids, fields);
+		HashMap<String, Object> User = Users.get(0);
+
+		// Guardar los datos
+		config.setServer(oerp_connection.getServer());
+		config.setPort(oerp_connection.getPort() + "");
+		config.setDataBase(oerp_connection.getDatabase());
+		config.setLogin(oerp_connection.getUserName() + "");
+		config.setPassword(oerp_connection.getPassword());
+		config.setUserID(oerp_connection.getUserId() + "");
+		config.setEmployeeID(employee_ids[0] + "");
+
+		config.setName((String) user_tuple[1] + "");
+		config.setCI((String) employee.get("personal_id"));
+		config.setPhoto((String) User.get("image"));
+		return true;
+	}
+
+	public boolean save_employee_info(Configuration config, String employee_id, String Server, int Port, String user, String pass) {
+		long ln_employee_id = Long.parseLong(employee_id + "");
+		return save_employee_info(config, ln_employee_id, Server, Port, user, pass);
+	}
+
+	public boolean save_employee_info(Configuration config, Long[] employee_ids, String Server, int Port, String user, String pass) {
+		long employee_id = employee_ids[0];
+		return save_employee_info(config, employee_id, Server, Port, user, pass);
+	}
+
+	public boolean save_employee_info(Configuration config, long employee_id, String Server, int Port, String user, String pass) {
+		OpenErpConnect oerp_connection = OpenErpConnect.connect(Server, Port, cmbDb.getSelectedItem().toString(), user, pass);
+		return save_employee_info(config, employee_id, oerp_connection);
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -172,31 +226,11 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 										dlgAlert.setMessage("La credenciales ingresadas no pertenecen a un Empleado.");
 										dlgAlert.create().show();
 									} else {
-										// Leer los datos del perfil del Usuario
-										// Logueado
-										Long[] ids = { (long) oerp.getUserId() };
-										String[] fields = { "name", "image", "image_small" };
-										List<HashMap<String, Object>> User_Logged = oerp.read("res.users", ids, fields);
-
-										HashMap<String, Object> aux = User_Logged.get(0);
-										String name_user = (String) aux.get("name");
-										String image_64 = (String) aux.get("image");
-
-										// Guardar los datos
-										config.setServer(Server);
-										config.setPort(txtPort.getText().toString());
-										config.setDataBase(cmbDb.getSelectedItem().toString());
-										config.setLogin(user);
-										config.setPassword(pass);
-										config.setUserID(oerp.getUserId() + "");
-										config.setEmployeeID(employee_ids[0] + "");
-
-										config.setName(name_user);
-										config.setPhoto(image_64);
-
-										Toast msg = Toast.makeText(ConfigActivity.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT);
-										msg.show();
-										finish();
+										// Guardar los datos del empleado
+										if (save_employee_info(config, employee_ids, oerp)) {
+											Toast.makeText(ConfigActivity.this, "Lo Datos Se Guardaron Correctamente.", Toast.LENGTH_SHORT).show();
+											finish();
+										}
 									}
 								}
 							}

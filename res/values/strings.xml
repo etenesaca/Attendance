@@ -54,4 +54,9 @@
     <string name="this_month">Mes</string>
     <string name="search">Buscar</string>
 
+    <!-- Profile -->
+    <string name="photo">Foto</string>
+    <string name="name">Nombre</string>
+    <string name="ci">CI</string>
+
 </resources>
