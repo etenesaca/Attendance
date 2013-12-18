@@ -27,6 +27,10 @@ public class ProfileActivity extends Activity {
 
 	private TextView txtName;
 	private TextView txtCI;
+	private TextView txtTZ;
+	private TextView txtLang;
+	private TextView txtEmail;
+	private TextView txtCompany;
 	private ImageView imgPhoto;
 	private Configuration config;
 
@@ -49,6 +53,10 @@ public class ProfileActivity extends Activity {
 
 		txtName = (TextView) findViewById(R.id.txtName);
 		txtCI = (TextView) findViewById(R.id.txtCI);
+		txtTZ = (TextView) findViewById(R.id.txtTZ);
+		txtLang = (TextView) findViewById(R.id.txtLang);
+		txtEmail = (TextView) findViewById(R.id.txtEmail);
+		txtCompany = (TextView) findViewById(R.id.txtCompany);
 		imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
 	}
 
@@ -56,6 +64,10 @@ public class ProfileActivity extends Activity {
 		// Cargar el Nombre de Usuario
 		txtCI.setText(config.getCI());
 		txtName.setText(config.getName());
+		txtTZ.setText(config.getTz());
+		txtLang.setText(config.getLang());
+		txtEmail.setText(config.getEmail());
+		txtCompany.setText(config.getCompany());
 
 		if (config.getPhoto() != null) {
 			// Cargar la Foto

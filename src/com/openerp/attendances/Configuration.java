@@ -15,8 +15,13 @@ public class Configuration {
 	private final String KEY_PASSWORD = "pass";
 	private final String KEY_PHOTO = "photo";
 	private final String KEY_USERID = "userid";
-	private final String KEY_CI = "ci";
 	private final String KEY_EMPLOYEEID = "employeeid";
+	private final String KEY_CI = "ci";
+
+	private final String KEY_TZ = "tz";
+	private final String KEY_LANG = "lang";
+	private final String KEY_COMPANY = "company";
+	private final String KEY_EMAIL = "email";
 
 	// Datos del Perfil
 	private final String KEY_NAME = "name";
@@ -151,7 +156,7 @@ public class Configuration {
 	}
 
 	/*
-	 * EMPLOYEEID
+	 * CI
 	 */
 	public String getCI() {
 		return getSettings().getString(KEY_CI, null);
@@ -160,6 +165,58 @@ public class Configuration {
 	public void setCI(String CI) {
 		SharedPreferences.Editor editor = getSettings().edit();
 		editor.putString(KEY_CI, CI);
+		editor.commit();
+	}
+
+	/*
+	 * TZ
+	 */
+	public String getTz() {
+		return getSettings().getString(KEY_TZ, null);
+	}
+
+	public void setTz(String Tz) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_TZ, Tz);
+		editor.commit();
+	}
+	
+	/*
+	 * LANG
+	 */
+	public String getLang() {
+		return getSettings().getString(KEY_LANG, null);
+	}
+
+	public void setLang(String Lang) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_LANG, Lang);
+		editor.commit();
+	}
+	
+	/*
+	 * COMPANY
+	 */
+	public String getCompany() {
+		return getSettings().getString(KEY_COMPANY, null);
+	}
+
+	public void setCompany(String Company) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_COMPANY, Company);
+		editor.commit();
+	}
+	
+	/*
+	 * EMAIL
+	 */
+	public String getEmail() {
+		return getSettings().getString(KEY_EMAIL, null);
+	}
+
+	public void setEmail(String Email) {
+		SharedPreferences.Editor editor = getSettings().edit();
+		editor.putString(KEY_EMAIL, Email);
 		editor.commit();
 	}
 }

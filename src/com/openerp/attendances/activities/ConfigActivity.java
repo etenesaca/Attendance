@@ -1,7 +1,6 @@
 package com.openerp.attendances.activities;
 
 import java.util.HashMap;
-import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -117,18 +116,29 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 	}
 
 	public boolean save_employee_info(Configuration config, long employee_id, OpenErpConnect oerp_connection) {
+		String[] fields_to_read = {};
+
 		// Leer los datos del empleado
-		String[] fields_employee = { "user_id", "personal_id" };
-		Long[] employee_ids = { employee_id };
-		List<HashMap<String, Object>> employees = oerp_connection.read("control.horario.employee", employee_ids, fields_employee);
-		HashMap<String, Object> employee = employees.get(0);
+		fields_to_read = new String[] { "user_id", "personal_id" };
+		HashMap<String, Object> Employee = oerp_connection.read("control.horario.employee", employee_id, fields_to_read);
 
 		// Leer los datos del perfil del Usuario
-		Object[] user_tuple = (Object[]) employee.get("user_id");
-		Long[] user_ids = { Long.parseLong(user_tuple[0] + "") };
-		String[] fields = { "image" };
-		List<HashMap<String, Object>> Users = oerp_connection.read("res.users", user_ids, fields);
-		HashMap<String, Object> User = Users.get(0);
+		Object[] User_tpl = (Object[]) Employee.get("user_id");
+		fields_to_read = new String[] { "image", "partner_id" };
+		HashMap<String, Object> User = oerp_connection.read("res.users", Long.parseLong(User_tpl[0] + ""), fields_to_read);
+		User.put("name", User_tpl[1] + "");
+
+		// Leer los datos del Partner
+		Object[] Partner_tpl = (Object[]) User.get("partner_id");
+		fields_to_read = new String[] { "email", "tz", "company_id", "lang" };
+		HashMap<String, Object> Partner = oerp_connection.read("res.partner", Long.parseLong(Partner_tpl[0] + ""), fields_to_read);
+		Object[] Company_tpl = (Object[]) Partner.get("company_id");
+		String lang = Partner.get("lang") + "";
+		if (lang.equals("es_ES")) {
+			lang = "Español";
+		} else if (Partner.get("lang").equals("en_EN")) {
+			lang = "Inglés";
+		}
 
 		// Guardar los datos
 		config.setServer(oerp_connection.getServer());
@@ -137,10 +147,15 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 		config.setLogin(oerp_connection.getUserName() + "");
 		config.setPassword(oerp_connection.getPassword());
 		config.setUserID(oerp_connection.getUserId() + "");
-		config.setEmployeeID(employee_ids[0] + "");
+		config.setEmployeeID(employee_id + "");
 
-		config.setName((String) user_tuple[1] + "");
-		config.setCI((String) employee.get("personal_id"));
+		config.setTz((String) Partner.get("tz"));
+		config.setLang(lang);
+		config.setEmail((String) Partner.get("email"));
+		config.setCompany((String) Company_tpl[1]);
+
+		config.setName((String) User.get("name"));
+		config.setCI((String) Employee.get("personal_id"));
 		config.setPhoto((String) User.get("image"));
 		return true;
 	}

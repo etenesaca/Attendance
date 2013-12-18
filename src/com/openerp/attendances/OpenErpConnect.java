@@ -236,20 +236,31 @@ public class OpenErpConnect {
 	 *            Specifying an empty fields array as: new String[0] will return
 	 *            all the fields
 	 * */
+	public HashMap<String, Object> read(String model, long id, String[] fields) {
+		HashMap<String, Object> Record = null;
+		try {
+			Long[] ids = { id };
+			List<HashMap<String, Object>> records = read(model, ids, fields);
+			Record = records.get(0);
+		} catch (Exception e) {
+		}
+		return Record;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<HashMap<String, Object>> read(String model, Long[] ids, String[] fields) {
-		List<HashMap<String, Object>> listOfFieldValues = null;
+		List<HashMap<String, Object>> Records = null;
 		try {
 			XMLRPCClient client = new XMLRPCClient(mUrl);
 			Object[] responseFields = (Object[]) client.call("execute", mDatabase, getUserId(), mPassword, model, "read", ids, fields);
-			listOfFieldValues = new ArrayList<HashMap<String, Object>>(responseFields.length);
+			Records = new ArrayList<HashMap<String, Object>>(responseFields.length);
 			for (Object objectFields : responseFields) {
-				listOfFieldValues.add((HashMap<String, Object>) objectFields);
+				Records.add((HashMap<String, Object>) objectFields);
 			}
 		} catch (XMLRPCException e) {
 			Log.d(CONNECTOR_NAME, e.toString());
 		}
-		return listOfFieldValues;
+		return Records;
 	}
 
 	/** Used to modify an existing object. */
