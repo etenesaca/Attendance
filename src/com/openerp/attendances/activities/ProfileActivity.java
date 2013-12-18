@@ -24,9 +24,9 @@ import com.openerp.attendances.R;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class ProfileActivity extends Activity {
-
-	private TextView txtName;
+	private TextView txtUsername;
 	private TextView txtCI;
+	private TextView txtName;
 	private TextView txtTZ;
 	private TextView txtLang;
 	private TextView txtEmail;
@@ -50,9 +50,9 @@ public class ProfileActivity extends Activity {
 
 		// Crear una instancia de la Clase de Configuraciones
 		config = new Configuration(this);
-
-		txtName = (TextView) findViewById(R.id.txtName);
+		txtUsername = (TextView) findViewById(R.id.txtUsername);
 		txtCI = (TextView) findViewById(R.id.txtCI);
+		txtName = (TextView) findViewById(R.id.txtName);
 		txtTZ = (TextView) findViewById(R.id.txtTZ);
 		txtLang = (TextView) findViewById(R.id.txtLang);
 		txtEmail = (TextView) findViewById(R.id.txtEmail);
@@ -63,6 +63,7 @@ public class ProfileActivity extends Activity {
 	void show_employee_info() {
 		// Cargar el Nombre de Usuario
 		txtCI.setText(config.getCI());
+		txtUsername.setText(config.getLogin());
 		txtName.setText(config.getName());
 		txtTZ.setText(config.getTz());
 		txtLang.setText(config.getLang());

@@ -119,7 +119,7 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 		String[] fields_to_read = {};
 
 		// Leer los datos del empleado
-		fields_to_read = new String[] { "user_id", "personal_id" };
+		fields_to_read = new String[] { "user_id", "personal_id", "create_uid" };
 		HashMap<String, Object> Employee = oerp_connection.read("control.horario.employee", employee_id, fields_to_read);
 
 		// Leer los datos del perfil del Usuario
@@ -151,7 +151,11 @@ public class ConfigActivity extends Activity implements OnClickListener, OnTouch
 
 		config.setTz((String) Partner.get("tz"));
 		config.setLang(lang);
-		config.setEmail((String) Partner.get("email"));
+		try {
+			config.setEmail((String) Partner.get("email"));
+		} catch (Exception e) {
+			config.setEmail(" -- ");
+		}
 		config.setCompany((String) Company_tpl[1]);
 
 		config.setName((String) User.get("name"));
