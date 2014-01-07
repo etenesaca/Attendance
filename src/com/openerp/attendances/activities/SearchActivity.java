@@ -45,14 +45,17 @@ public class SearchActivity extends Activity {
 	private TextView txtTotalHours;
 	private TextView txtTotalHours_Now;
 	private TextView txtTotalHours_Week;
+	private TextView txtTotalHours_Day;
 	private ListView lstAttendances;
 	private ListView lstExtraHours;
 
 	Timer T;
 	int seconds_check_in;
 	float hours_by_week;
+	float hours_by_day;
 	int total_seconds;
 	int total_seconds_in_this_week;
+	int total_seconds_in_this_day;
 	boolean sum_seconds = false;
 
 	TabHost contenedorPestania;
@@ -109,7 +112,7 @@ public class SearchActivity extends Activity {
 		int anio = fecha.get(Calendar.YEAR);
 		int mes = fecha.get(Calendar.MONTH);
 		int dia = fecha.get(Calendar.DAY_OF_MONTH);
-		String Hoy = dia + "/" + (mes + 1) + "/" + anio;
+		String Hoy = hupernikao.CompletarCadena(dia + "") + "/" + hupernikao.CompletarCadena((mes + 1) + "") + "/" + anio;
 
 		txtFrom.setText(Hoy);
 		txtTo.setText(Hoy);
@@ -133,6 +136,14 @@ public class SearchActivity extends Activity {
 							String with_now = hupernikao.ConvertToHourFormat(transcurrido, true);
 							txtTotalHours_Now.setText("00:00:00 " + with_now);
 
+							// Calcular las horas restantes en este dia
+							int seconds_by_day = (int) (hours_by_day * 3600);
+							int faltantes_day = seconds_by_day - (transcurrido + total_seconds_in_this_day);
+							String faltantes_day_str = "00.00:00";
+							if (faltantes_day > 0) {
+								faltantes_day_str = hupernikao.ConvertToHourFormat(faltantes_day, true);
+							}
+
 							// Calcular las horas restantes en esta semana
 							int seconds_by_week = (int) (hours_by_week * 3600);
 							int faltantes = seconds_by_week - (transcurrido + total_seconds_in_this_week);
@@ -140,7 +151,7 @@ public class SearchActivity extends Activity {
 							if (faltantes > 0) {
 								faltantes_str = hupernikao.ConvertToHourFormat(faltantes, true);
 							}
-							txtTotalHours_Week.setText("" + faltantes_str);
+							txtTotalHours_Week.setText("" + faltantes_str + " " + faltantes_day_str);
 
 							// Sumar el total de horas mas ahora
 							int total_hours_with_now = (int) (total_seconds + transcurrido);
@@ -210,13 +221,22 @@ public class SearchActivity extends Activity {
 						String hours_by_week_str = registers_dict.get("hours_by_week") + "";
 						hours_by_week = Float.parseFloat(hours_by_week_str);
 
+						// Obtener las horas laborables por Día
+						String hours_by_day_str = registers_dict.get("hours_by_day") + "";
+						hours_by_day = Float.parseFloat(hours_by_day_str);
+
 						// Obtener el tiempo total en el rango de fechas
 						String total_seconds_str = registers_dict.get("total_seconds") + "";
 						total_seconds = Integer.parseInt(total_seconds_str);
 
-						// Obtener el tiempo total laborado por semana en segund
+						// Obtener el tiempo total laborado por semana en
+						// segundos
 						String total_seconds_in_this_week_str = registers_dict.get("total_seconds_in_this_week") + "";
 						total_seconds_in_this_week = Integer.parseInt(total_seconds_in_this_week_str);
+
+						// Obtener el tiempo total laborado por dia en segundos
+						String total_seconds_in_this_day_str = registers_dict.get("total_seconds_in_this_day") + "";
+						total_seconds_in_this_day = Integer.parseInt(total_seconds_in_this_day_str);
 
 						// Sacar el total de Horas
 						String total_hours_format_hour = registers_dict.get("total_hours_format_hour") + "";
